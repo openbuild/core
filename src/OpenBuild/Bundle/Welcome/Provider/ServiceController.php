@@ -19,31 +19,14 @@ class ServiceController extends AbstractServiceController
 		$controllers = $app['controllers_factory'];
 
 		$controllers->get('/welcome.html', function (Application $app){
-				
-			$localFile = $app['request']->server->get('DOCUMENT_ROOT') . '../views/app/welcome/welcome.html';
-			$appFile = $app['spa_files_dir'] . 'thanks/index.html';
-			
-			if(file_exists($localFile)){
-			
-				return new Response(
-            		file_get_contents($localFile),
-					200
-				);
-				
-			}elseif(file_exists($appFile)){
-					
-				return new Response(
-            		file_get_contents($appFile),
-					200
-				);
-					
+
+			if($app['spa'] === true && $app['search_engine'] === false){
+				return $app['bundle.welcome.index']();
 			}else{
-				
-				$app->abort(404, "Could not find view file index.html");
-				
+				return $app['bundle.welcome.full_page.index']();
 			}
 			
-		});
+		})->bind('welcome-index');
 
 		$controllers->get('/welcome.js', function (Application $app){
 		
@@ -72,7 +55,38 @@ class ServiceController extends AbstractServiceController
 	//Service interface
 	public function register(Application $app)
 	{
-        
+
+		$app['bundle.welcome.full_page.index'] = $app->protect(function() use ($app){
+ 			return 'Do full page welcome index';
+ 		});
+ 
+ 		$app['bundle.welcome.index'] = $app->protect(function() use ($app){
+
+			$localFile = $app['request']->server->get('DOCUMENT_ROOT') . '../views/app/welcome/welcome.html';
+			$appFile = $app['spa_files_dir'] . 'welcome/welcome.html';
+			
+			if(file_exists($localFile)){
+			
+				return new Response(
+            		file_get_contents($localFile),
+					200
+				);
+				
+			}elseif(file_exists($appFile)){
+					
+				return new Response(
+            		file_get_contents($appFile),
+					200
+				);
+					
+			}else{
+				
+				$app->abort(404, "Could not find view file index.html");
+				
+			}
+
+		});
+
     }
 
 	//Service interface
