@@ -19,31 +19,14 @@ class ServiceController extends AbstractServiceController
 		$controllers = $app['controllers_factory'];
 
 		$controllers->get('/index.html', function (Application $app){
-				
-			$localFile = $app['request']->server->get('DOCUMENT_ROOT') . '../views/app/thanks/index.html';
-			$appFile = $app['spa_files_dir'] . 'thanks/index.html';
-			
-			if(file_exists($localFile)){
-			
-				return new Response(
-            		file_get_contents($localFile),
-					200
-				);
-				
-			}elseif(file_exists($appFile)){
-					
-				return new Response(
-            		file_get_contents($appFile),
-					200
-				);
-					
+
+			if($app['spa'] === true && $app['search_engine'] === false){
+				return $app['bundle.thanks.index']();
 			}else{
-				
-				$app->abort(404, "Could not find view file index.html");
-				
+				return $app['bundle.thanks.full_page.index']();
 			}
 			
-		});
+		})->bind('thanks-index');
 
 		$controllers->get('/index.js', function (Application $app){
 		
@@ -72,7 +55,38 @@ class ServiceController extends AbstractServiceController
 	//Service interface
 	public function register(Application $app)
 	{
-        
+	
+		$app['bundle.thanks.full_page.index'] = $app->protect(function() use ($app){
+ 			return 'Do full page thanks index';
+ 		});
+ 
+ 		$app['bundle.thanks.index'] = $app->protect(function() use ($app){
+
+			$localFile = $app['request']->server->get('DOCUMENT_ROOT') . '../views/app/thanks/index.html';
+			$appFile = $app['spa_files_dir'] . 'thanks/index.html';
+			
+			if(file_exists($localFile)){
+			
+				return new Response(
+            		file_get_contents($localFile),
+					200
+				);
+				
+			}elseif(file_exists($appFile)){
+					
+				return new Response(
+            		file_get_contents($appFile),
+					200
+				);
+					
+			}else{
+				
+				$app->abort(404, "Could not find view file index.html");
+				
+			}
+
+		});
+	   
     }
 
 	//Service interface
