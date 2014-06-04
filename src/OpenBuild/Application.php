@@ -172,7 +172,17 @@
 			})
 			->assert('home', '|index.html|index.obd')
 			->bind('homepage');
-						
+			
+			$app['spaSearchEngineMap'] = array(
+				'/index.obd' => 'welcome-index',
+				'/contact-us.obd' => 'contact-index',
+				'/flickr.obd' => 'flickr-index',
+				'/products-and-services.obd' => 'services-index',
+				'/terms.obd' => 'terms-index',
+				'/terms-cookies.obd' => 'terms-cookies',
+				'/thanks.obd' => 'thanks-index'
+			);
+					
 			$this->get('/app/{name}.{extension}', function(Request $request, $name, $extension) use ($app){
 			
 				$appFile = dirname(__FILE__) . '/views/app/' . $name . '.' . $extension;
@@ -197,14 +207,21 @@
 			
 				if($request->query->get('_escaped_fragment_') !== null){
 
-					$uri = $app['url_generator']->generate('terms-index');
-					var_dump($uri);
+					if(isset($app['spaSearchEngineMap'][$request->getPathInfo()])){
+					
+						$uri = $app['url_generator']->generate($app['spaSearchEngineMap'][$request->getPathInfo()]);
+						$subRequest = Request::create($uri, 'GET');
+						$response = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST, false);
+						return $response->getContent();
+					
+					}else{
+					
+						//TODO - Complain
+						var_dump($app['spaSearchEngineMap']);
+						die();
+					
+					}
 				
-					$subRequest = Request::create($uri, 'GET');
-					$response = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST, false);
-					$body = $response->getContent();
-					var_dump($body);
-					die('Handle search engine: ' . $request->getPathInfo());
 				}
 
 				$subRequest = Request::create('/', 'GET');
