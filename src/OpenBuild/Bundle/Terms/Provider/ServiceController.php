@@ -15,28 +15,10 @@ class ServiceController extends AbstractServiceController
 	public function connect(Application $app)
 	{
 	
-		// creates a new controller based on the default route
-		$controllers = $app['controllers_factory'];
-
-		$controllers->get('/index.html', function (Application $app){
-
-			if($app['spa'] === true && $app['search_engine'] === false){
-				return $app['bundle.terms.index']();
-			}else{
-				return $app['bundle.terms.full_page.index']();
-			}
-			
-		})->bind('terms-index');
-
-		$controllers->get('/cookies.html', function (Application $app){
-			
-			if($app['spa'] === true && $app['search_engine'] === false){
-				return $app['bundle.terms.cookies']();
-			}else{
-				return $app['bundle.terms.full_page.cookies']();
-			}
-						
-		});
+		$controllers = $this->mapControllers($app, array(
+			'terms-index.html' => true,
+			'terms-cookies.html' => true
+		));
 
 		$controllers->get('/index.js', function (Application $app){
 		
