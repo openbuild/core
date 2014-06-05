@@ -216,9 +216,7 @@
 					
 					}else{
 					
-						//TODO - Complain
-						var_dump($app['spaSearchEngineMap']);
-						die();
+						$app->abort(404, "Could not find view for " . $request->getPathInfo());
 					
 					}
 				
