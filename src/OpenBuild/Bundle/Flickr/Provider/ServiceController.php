@@ -15,32 +15,14 @@ class ServiceController extends AbstractServiceController
 	public function connect(Application $app)
 	{
 
-		// creates a new controller based on the default route
-		$controllers = $app['controllers_factory'];
+		$controllers = $this->mapControllers($app, array(
+			'flickr-index.html' => true,
+			'flickr-detail.html' => true
+		));
 
-		$controllers->get('/detail.html', function (Application $app){
-
-			if($app['spa'] === true && $app['search_engine'] === false){
-				return $app['bundle.flickr.detail']();
-			}else{
-				return $app['bundle.flickr.full_page.detail']();
-			}
-			
-		})->bind('flickr-detail');
-
-		$controllers->get('/flickr.html', function (Application $app){
-
-			if($app['spa'] === true && $app['search_engine'] === false){
-				return $app['bundle.flickr.index']();
-			}else{
-				return $app['bundle.flickr.full_page.index']();
-			}
-			
-		})->bind('flickr-index');
-
-		$controllers->get('/flickr.js', function (Application $app){
+		$controllers->get('/index.js', function (Application $app){
 		
-			$appFile = $app['spa_files_dir'] . 'flickr/flickr.js';
+			$appFile = $app['spa_files_dir'] . 'flickr/index.js';
 			
 			if(file_exists($appFile)){
 					
@@ -52,7 +34,7 @@ class ServiceController extends AbstractServiceController
 					
 			}else{
 				
-				$app->abort(404, "Could not find view file flickr.js");
+				$app->abort(404, "Could not find view file flickr/index.js");
 				
 			}
 			
@@ -72,8 +54,8 @@ class ServiceController extends AbstractServiceController
  
  		$app['bundle.flickr.index'] = $app->protect(function() use ($app){
 
-			$localFile = $app['request']->server->get('DOCUMENT_ROOT') . '../views/app/flickr/flickr.html';
-			$appFile = $app['spa_files_dir'] . 'flickr/flickr.html';
+			$localFile = $app['request']->server->get('DOCUMENT_ROOT') . '../views/app/flickr/index.html';
+			$appFile = $app['spa_files_dir'] . 'flickr/index.html';
 			
 			if(file_exists($localFile)){
 			
@@ -91,7 +73,7 @@ class ServiceController extends AbstractServiceController
 					
 			}else{
 				
-				$app->abort(404, "Could not find view file flickr.html");
+				$app->abort(404, "Could not find view file flickr/index.html");
 				
 			}
 			
@@ -122,7 +104,7 @@ class ServiceController extends AbstractServiceController
 					
 			}else{
 				
-				$app->abort(404, "Could not find view file detail.html");
+				$app->abort(404, "Could not find view file filickr/detail.html");
 				
 			}
 			

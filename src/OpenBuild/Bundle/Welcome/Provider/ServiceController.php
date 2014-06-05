@@ -19,9 +19,9 @@ class ServiceController extends AbstractServiceController
 			'welcome-index.html' => true
 		));
 	
-		$controllers->get('/welcome.js', function (Application $app){
+		$controllers->get('/index.js', function (Application $app){
 		
-			$appFile = $app['spa_files_dir'] . 'welcome/welcome.js';
+			$appFile = $app['spa_files_dir'] . 'welcome/index.js';
 			
 			if(file_exists($appFile)){
 					
@@ -33,7 +33,7 @@ class ServiceController extends AbstractServiceController
 					
 			}else{
 				
-				$app->abort(404, "Could not find view file welcome.js");
+				$app->abort(404, "Could not find view file welcome/index.js");
 				
 			}
 			
@@ -53,8 +53,8 @@ class ServiceController extends AbstractServiceController
  
  		$app['bundle.welcome.index'] = $app->protect(function() use ($app){
 
-			$localFile = $app['request']->server->get('DOCUMENT_ROOT') . '../views/app/welcome/welcome.html';
-			$appFile = $app['spa_files_dir'] . 'welcome/welcome.html';
+			$localFile = $app['request']->server->get('DOCUMENT_ROOT') . '../views/app/welcome/index.html';
+			$appFile = $app['spa_files_dir'] . 'welcome/index.html';
 			
 			if(file_exists($localFile)){
 			
@@ -72,7 +72,7 @@ class ServiceController extends AbstractServiceController
 					
 			}else{
 				
-				$app->abort(404, "Could not find view file index.html");
+				$app->abort(404, "Could not find view file welcome/index.html");
 				
 			}
 
