@@ -10,8 +10,8 @@
         activate: function(){
             router.map([
 				{ route: '404.obd', title:'Page not found', moduleId: 'error/not-found', nav: false },
-				{ route: ['', 'index.obd'], title:'Welcome', moduleId: 'welcome/welcome', nav: true, params: {fu: 'baz' }},
-				{ route: 'flickr.obd', title:'Flickr', moduleId: 'flickr/flickr', nav: true },
+				{ route: ['', 'index.obd'], title:'Welcome', moduleId: 'welcome/index', nav: true, params: {fu: 'baz' }},
+				{ route: 'flickr.obd', title:'Flickr', moduleId: 'flickr/index', nav: true },
 				{ route: 'products-and-services.obd', title:'Products &amp; Services', moduleId: 'services/index', nav: true },
 				{ route: 'contact-us.obd', title:'Contact Us', moduleId: 'contact/index', nav: true },
 				{ route: 'terms(-:page).obd', moduleId: 'terms/index', nav: false},
