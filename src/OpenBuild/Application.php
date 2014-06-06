@@ -115,6 +115,8 @@
 
 			});
 			
+			$this->mount('/app',   new \OpenBuild\Provider\AppServiceController($app));
+			
 			//TODO - Workout dynamic routes			
 			if(isset($_GET['_escaped_fragment_']) || $app['spa'] === false){
 
@@ -137,36 +139,13 @@
 				$this->mount('/app/welcome',   new \OpenBuild\Bundle\Welcome\Provider\ServiceController($app));
 			
 			}
-			
-						
 						
 			$this->get('/{home}', function(Request $request) use ($app){
 
-				if($request->query->get('_escaped_fragment_') !== null){
-					die('Handle search engine: ' . $request->getPathInfo());
-				}
-
-				$localFile = $request->server->get('DOCUMENT_ROOT') . '../views/index.html';
-				$appFile = dirname(__FILE__) . '/views/index.html';
-				
-				if(file_exists($localFile)){
-			
-					return new Response(
-            			file_get_contents($localFile),
-						200
-					);
-				
-				}elseif(file_exists($appFile)){
-					
-					return new Response(
-            			file_get_contents($appFile),
-						200
-					);
-					
+				if($app['spa'] && $app['search_engine'] === false){
+					return $app['page.home']();
 				}else{
-				
-					$app->abort(404, "Could not find view file index.html");
-				
+					return $app['page.home.full_page']();
 				}
 				
 			})
@@ -182,27 +161,7 @@
 				'/terms-cookies.obd' => 'terms-cookies',
 				'/thanks.obd' => 'thanks-index'
 			);
-					
-			$this->get('/app/{name}.{extension}', function(Request $request, $name, $extension) use ($app){
-			
-				$appFile = dirname(__FILE__) . '/views/app/' . $name . '.' . $extension;
-
-				if(file_exists($appFile)){
-
-					return new Response(
-            			file_get_contents($appFile),
-						200,
-						$extension == 'js' ? array('content-type' => 'application/javascript') : array()
-					);
-
-				}else{
-					$app->abort(404, "Could not find view file app/$name.$extension");
-				}
-			
-			})
-			->assert('name', 'main|shell|message-html')
-			->assert('extension', 'html|js');
-		
+	
 			$this->get('/{page}.obd', function(Request $request) use ($app){
 			
 				if($request->query->get('_escaped_fragment_') !== null){
@@ -227,38 +186,6 @@
 
 			});
 
-/*			
-			$this->get('/app/{path}.{extension}', function(\Symfony\Component\HttpFoundation\Request $request, $path, $extension) use ($app){
-			
-				$localFile = $request->server->get('DOCUMENT_ROOT') . '../views/app/' . $path . '.' . $extension;
-				$appFile = dirname(__FILE__) . '/views/app/' . $path . '.' . $extension;
-
-				if(file_exists($localFile)){
-				
-					return new Response(
-            			file_get_contents($localFile),
-						200,
-						$extension == 'js' ? array('content-type' => 'application/javascript') : array()
-					);
-				
-				}elseif(file_exists($appFile)){
-
-					return new Response(
-            			file_get_contents($appFile),
-						200,
-						$extension == 'js' ? array('content-type' => 'application/javascript') : array()
-					);
-
-				}else{
-					$app->abort(404, "Could not find view file $path.$extension");
-				}
-
-
-			
-			})
-			->assert('path', '[\w\-_/]+')
-			->assert('extension', 'html|js');
-*/
 /*			
 			$this->get('/{path}', function(\Symfony\Component\HttpFoundation\Request $request, $path) use ($app){
 
