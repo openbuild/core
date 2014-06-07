@@ -43,8 +43,15 @@ abstract class ServiceController implements ServiceProviderInterface, Controller
 			
 			$bind = $module . '-' . $page;
 			$uri  = '/'. $page . '.' . $extension;
-			$spa  = 'bundle.' . $module . '.' . $page;
-			$full = 'bundle.' . $module .'.full_page.' . $page;
+
+			if($extension == 'js'){
+				$bind .= '-js';
+				$spa  = 'bundle.' . $module . '.' . $page . '.js';
+				$full = 'bundle.' . $module .'.full_page.' . $page . '.js';
+			}else{
+				$spa  = 'bundle.' . $module . '.' . $page;
+				$full = 'bundle.' . $module .'.full_page.' . $page;
+			}
 
 /*
 			var_dump($bind);
