@@ -2,7 +2,7 @@
 
 namespace OpenBuild\Bundle\Welcome\Entity\Introduction\Attribute;
 
-class Text
+class Display
 {
     private $value;
 

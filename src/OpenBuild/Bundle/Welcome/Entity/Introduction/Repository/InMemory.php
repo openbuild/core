@@ -5,7 +5,7 @@ namespace OpenBuild\Bundle\Welcome\Entity\Introduction\Repository;
 use OpenBuild\Bundle\Welcome\Entity\Introduction\Repository;
 use OpenBuild\Bundle\Welcome\Entity\Introduction\Entity;
 use OpenBuild\Bundle\Welcome\Entity\Introduction\Attribute\Id;
-use OpenBuild\Bundle\Welcome\Entity\Introduction\Attribute\Text;
+use OpenBuild\Bundle\Welcome\Entity\Introduction\Attribute\Display;
 
 class InMemory implements Repository
 {
@@ -16,7 +16,7 @@ class InMemory implements Repository
 
         $this->introductions[] = new Entity(
         	new Id(1), 
-        	new Text('Welcome to OpenBuild (Sheffield) LTD!')
+        	new Display('Welcome to OpenBuild (Sheffield) LTD!')
         );
 
     }

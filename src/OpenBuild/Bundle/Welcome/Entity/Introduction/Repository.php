@@ -5,7 +5,7 @@ namespace OpenBuild\Bundle\Welcome\Entity\Introduction;
 use OpenBuild\Bundle\Welcome\Entity\Introduction\Entity;
 
 use OpenBuild\Bundle\Welcome\Entity\Introduction\Attribute\Id;
-use OpenBuild\Bundle\Welcome\Entity\Introduction\Attribute\Text;
+use OpenBuild\Bundle\Welcome\Entity\Introduction\Attribute\Display;
 
 interface Repository
 {

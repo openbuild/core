@@ -3,17 +3,17 @@
 namespace OpenBuild\Bundle\Welcome\Entity\Introduction;
 
 use OpenBuild\Bundle\Welcome\Entity\Introduction\Attribute\Id;
-use OpenBuild\Bundle\Welcome\Entity\Introduction\Attribute\Text;
+use OpenBuild\Bundle\Welcome\Entity\Introduction\Attribute\Display;
 
 class Entity
 {
     private $id;
     private $text;
 
-    public function __construct(Id $id, Text $text)
+    public function __construct(Id $id, Display $display)
     {
         $this->id = $id;
-        $this->text = $text;
+        $this->display = $display;
     }
 
     public function getId()
@@ -21,9 +21,9 @@ class Entity
         return $this->id;
     }
 
-    public function getText()
+    public function getDisplay()
     {
-        return $this->text;
+        return $this->display;
     }
 
 }
