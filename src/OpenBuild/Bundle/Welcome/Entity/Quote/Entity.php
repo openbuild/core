@@ -26,7 +26,7 @@ class Entity
 
     public function getIndividual()
     {
-        return $individual->individual;
+        return $this->individual;
     }
 
     public function getQuote()
