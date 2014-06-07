@@ -17,28 +17,9 @@ class ServiceController extends AbstractServiceController
 
 		$controllers = $this->mapControllers($app, array(
 			'flickr-index.html' => true,
+			'flickr-index.js' => true,
 			'flickr-detail.html' => true
 		));
-
-		$controllers->get('/index.js', function (Application $app){
-		
-			$appFile = $app['spa_files_dir'] . 'flickr/index.js';
-			
-			if(file_exists($appFile)){
-					
-				return new Response(
-            		file_get_contents($appFile),
-					200,
-					array('content-type' => 'application/javascript')
-				);
-					
-			}else{
-				
-				$app->abort(404, "Could not find view file flickr/index.js");
-				
-			}
-			
-		});
 
 		return $controllers;
 
@@ -78,6 +59,26 @@ class ServiceController extends AbstractServiceController
 			}
 			
 		});  
+
+		$app['bundle.flickr.index.js'] = $app->protect(function() use ($app){
+		
+			$appFile = $app['spa_files_dir'] . 'flickr/index.js';
+			
+			if(file_exists($appFile)){
+					
+				return new Response(
+            		file_get_contents($appFile),
+					200,
+					array('content-type' => 'application/javascript')
+				);
+					
+			}else{
+				
+				$app->abort(404, "Could not find view file flickr/index.js");
+				
+			}
+		
+		});
 
 		$app['bundle.flickr.full_page.detail'] = $app->protect(function() use ($app){
  			return 'Do full page flickr detail';

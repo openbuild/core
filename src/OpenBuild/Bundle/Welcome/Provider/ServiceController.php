@@ -14,30 +14,12 @@ class ServiceController extends AbstractServiceController
 	//Contoller interface
 	public function connect(Application $app)
 	{
-	
+
+error_log('connect welcome');	
 		$controllers = $this->mapControllers($app, array(
-			'welcome-index.html' => true
+			'welcome-index.html' => true,
+			'welcome-index.js' => true
 		));
-	
-		$controllers->get('/index.js', function (Application $app){
-		
-			$appFile = $app['spa_files_dir'] . 'welcome/index.js';
-			
-			if(file_exists($appFile)){
-					
-				return new Response(
-            		file_get_contents($appFile),
-					200,
-					array('content-type' => 'application/javascript')
-				);
-					
-			}else{
-				
-				$app->abort(404, "Could not find view file welcome/index.js");
-				
-			}
-			
-		});
 
 		return $controllers;
 
@@ -46,6 +28,7 @@ class ServiceController extends AbstractServiceController
 	//Service interface
 	public function register(Application $app)
 	{
+error_log('register welcome');	
 
 		$app['bundle.welcome.full_page.index'] = $app->protect(function() use ($app){
  			return 'Do full page welcome index';
@@ -77,12 +60,33 @@ class ServiceController extends AbstractServiceController
 			}
 
 		});
+		
+		$app['bundle.welcome.index.js'] = $app->protect(function() use ($app){
+		
+			$appFile = $app['spa_files_dir'] . 'welcome/index.js';
+			
+			if(file_exists($appFile)){
+					
+				return new Response(
+            		file_get_contents($appFile),
+					200,
+					array('content-type' => 'application/javascript')
+				);
+					
+			}else{
+				
+				$app->abort(404, "Could not find view file welcome/index.js");
+				
+			}
+		
+		});
 
     }
 
 	//Service interface
     public function boot(Application $app)
     {
+error_log('boot welcome');	
 
 		
     	

@@ -16,28 +16,9 @@ class ServiceController extends AbstractServiceController
 	{
 	
 		$controllers = $this->mapControllers($app, array(
-			'services-index.html' => true
+			'services-index.html' => true,
+			'services-index.js' => true
 		));
-
-		$controllers->get('/index.js', function (Application $app){
-		
-			$appFile = $app['spa_files_dir'] . 'services/index.js';
-			
-			if(file_exists($appFile)){
-					
-				return new Response(
-            		file_get_contents($appFile),
-					200,
-					array('content-type' => 'application/javascript')
-				);
-					
-			}else{
-				
-				$app->abort(404, "Could not find view file index.js");
-				
-			}
-			
-		});
 
 		return $controllers;
 
@@ -76,7 +57,28 @@ class ServiceController extends AbstractServiceController
 				
 			}
 
-		});   
+		});
+		
+		$app['bundle.services.index.js'] = $app->protect(function() use ($app){
+		
+			$appFile = $app['spa_files_dir'] . 'services/index.js';
+			
+			if(file_exists($appFile)){
+					
+				return new Response(
+            		file_get_contents($appFile),
+					200,
+					array('content-type' => 'application/javascript')
+				);
+					
+			}else{
+				
+				$app->abort(404, "Could not find view file index.js");
+				
+			}
+		
+		});
+		
     }
 
 	//Service interface
