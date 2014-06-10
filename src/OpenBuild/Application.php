@@ -90,6 +90,10 @@
 			
 			$app['spa_files_dir'] = dirname(__FILE__) . '/views/app/';
 			
+			$app->register(new \Silex\Provider\TwigServiceProvider(), array(
+				'twig.path' => __DIR__.'/views',
+			));
+			
 			$app->register(new \Silex\Provider\UrlGeneratorServiceProvider());
 
 			$app->before(function(Request $request) use ($app){
