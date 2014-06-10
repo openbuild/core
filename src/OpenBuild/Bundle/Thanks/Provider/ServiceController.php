@@ -14,7 +14,6 @@ class ServiceController extends AbstractServiceController
 	//Contoller interface
 	public function connect(Application $app)
 	{
-error_log('connect thanks');	
 	
 		$controllers = $this->mapControllers($app, array(
 			'thanks-index.html' => true,
@@ -28,10 +27,17 @@ error_log('connect thanks');
 	//Service interface
 	public function register(Application $app)
 	{
-error_log('register thanks');	
 
 		$app['bundle.thanks.full_page.index'] = $app->protect(function() use ($app){
- 			return 'Do full page thanks index';
+
+			$introduction = new \OpenBuild\Bundle\Thanks\Entity\Introduction\Repository\InMemory();
+			$message = new \OpenBuild\Bundle\Thanks\Entity\Message\Repository\InMemory();
+
+			return $app->render('app/thanks/index.full.html', [
+				'introduction' => $introduction->getLatest(),
+				'messages' => $message->findAll()
+			]);
+
  		});
  
  		$app['bundle.thanks.index'] = $app->protect(function() use ($app){
@@ -86,9 +92,6 @@ error_log('register thanks');
 	//Service interface
     public function boot(Application $app)
     {
-error_log('boot thanks');	
-
-		
     	
     }
 
