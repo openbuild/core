@@ -35,6 +35,37 @@ The photograph was taken on the Chajnantor Plateau, at an altitude of 5000 metre
 ALMA, an international astronomy facility, is a partnership of Europe, North America and East Asia in cooperation with the Republic of Chile. ALMA construction and operations are led on behalf of Europe by ESO, on behalf of North America by the National Radio Astronomy Observatory (NRAO), and on behalf of East Asia by the National Astronomical Observatory of Japan (NAOJ). The Joint ALMA Observatory (JAO) provides the unified leadership and management of the construction, commissioning and operation of ALMA.')
         
     	);
+    	
+    	$this->messages[] = new Entity(
+        	new Id(2), 
+        	new Message('Test 2')
+        );
+        
+        $this->messages[] = new Entity(
+        	new Id(3), 
+        	new Message('Test 3')
+        );
+        
+        $this->messages[] = new Entity(
+        	new Id(4), 
+        	new Message('Test 4')
+        );
+        
+        $this->messages[] = new Entity(
+        	new Id(5), 
+        	new Message('Test 5')
+        );
+        
+        $this->messages[] = new Entity(
+        	new Id(6), 
+        	new Message('Test 6')
+        );
+        
+        $this->messages[] = new Entity(
+        	new Id(7), 
+        	new Message('Test 7')
+        );
+        
     }
 
     public function find(Id $id)
