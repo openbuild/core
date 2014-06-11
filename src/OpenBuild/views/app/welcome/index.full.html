@@ -1,0 +1,23 @@
+{% extends "index.full.html" %}
+{% block main %}
+<section>
+	<h2>{{ introduction.getDisplay().getValue() }}</h2>
+	<blockquote>{{ description.getDisplay().getValue() }}</blockquote>
+	<h3>Features</h3>
+	<ul>
+		{% for feature in features %}
+		<li>{{ feature.getFeature().getValue() }}</li>
+		{% endfor %}
+	</ul>
+	<h3>What people have said</h3>
+	<ul>
+		{% for quote in quotes %}
+		<li>{{ quote.getQuote().getValue() }}</li>
+		{% endfor %}
+	</ul>
+	<div class="alert alert-success">
+		<h4>Read Me Please</h4>
+		<p>For information about this template and for general documenation please visit <a href="http://www.durandaljs.com">the official site</a> and if you can't find answers to your questions there, we hope you will join our <a href="https://groups.google.com/forum/?fromgroups#!forum/durandaljs">google group</a>.</p>
+	</div>
+</section>
+{% endblock %}
