@@ -7,6 +7,8 @@ use OpenBuild\Abstracts\ServiceController AS AbstractServiceController;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+
 
 class AppServiceController extends AbstractServiceController
 {
@@ -50,7 +52,20 @@ class AppServiceController extends AbstractServiceController
 	{
 
 		$app['page.home.full_page'] = $app->protect(function() use ($app){
- 			return 'Do full home page';
+
+			//TODO - Configure the home page to any module
+			$uri = $app['url_generator']->generate('welcome-index');
+
+			$subRequest = Request::create($uri, 'GET', array(), $app['request']->cookies->all(), array(), $app['request']->server->all());
+
+			if($app['request']->getSession()){
+				$subRequest->setSession($app['request']->getSession());
+			}
+
+			$response = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST, false);
+			
+			return $response;
+
  		});
  		
 		$app['page.home'] = $app->protect(function() use ($app){
