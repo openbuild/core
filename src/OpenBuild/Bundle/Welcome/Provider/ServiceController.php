@@ -28,9 +28,24 @@ error_log('connect welcome');
 	//Service interface
 	public function register(Application $app)
 	{
-error_log('register welcome');	
 
 		$app['bundle.welcome.full_page.index'] = $app->protect(function() use ($app){
+		
+			$quote = new \OpenBuild\Bundle\Welcome\Entity\Quote\Repository\InMemory();
+
+			$feature = new \OpenBuild\Bundle\Welcome\Entity\Feature\Repository\InMemory();
+
+			$introduction = new \OpenBuild\Bundle\Welcome\Entity\Introduction\Repository\InMemory();
+
+			$description = new \OpenBuild\Bundle\Welcome\Entity\Description\Repository\InMemory();
+		
+			return $app->render('app/welcome/index.full.html', [
+				'introduction' => $introduction->getLatest(),
+				'description' => $description->getLatest(),
+				'quotes' => $quote->findAll(),
+				'features' => $feature->findAll(),
+			]);
+		
  			return 'Do full page welcome index';
  		});
  
