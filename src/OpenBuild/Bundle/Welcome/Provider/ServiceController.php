@@ -15,7 +15,6 @@ class ServiceController extends AbstractServiceController
 	public function connect(Application $app)
 	{
 
-error_log('connect welcome');	
 		$controllers = $this->mapControllers($app, array(
 			'welcome-index.html' => true,
 			'welcome-index.js' => true
@@ -46,7 +45,6 @@ error_log('connect welcome');
 				'features' => $feature->findAll(),
 			]);
 		
- 			return 'Do full page welcome index';
  		});
  
  		$app['bundle.welcome.index'] = $app->protect(function() use ($app){
@@ -101,9 +99,6 @@ error_log('connect welcome');
 	//Service interface
     public function boot(Application $app)
     {
-error_log('boot welcome');	
-
-		
     	
     }
 
