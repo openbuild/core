@@ -1,0 +1,28 @@
+{% extends "index.full.html" %}
+{% block main %}
+<div class="jumbotron">
+	<div class="container">
+		<h1>{{ introduction.getTitle().getValue() }}</h1>
+		<p>{{ introduction.getBody().getHTML()|raw }}</p>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-6">
+			<h2>Services</h2>
+			{% for service in services %}
+			<h3>{{ service.getTitle().getValue() }}</h3>
+			{{ service.getDescription().getHTML()|raw }}
+			{% endfor %}			
+		</div>
+		<div class="col-md-6">
+			<h2>Products</h2>
+			{% for product in products %}
+			<h3>{{ product.getTitle().getValue() }}</h3>
+			{{ product.getDescription().getHTML()|raw }}
+			{% endfor %}
+		</div>
+	</div>
+</div>
+{% endblock %}
