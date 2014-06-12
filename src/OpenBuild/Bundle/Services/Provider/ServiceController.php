@@ -29,7 +29,17 @@ class ServiceController extends AbstractServiceController
 	{
 	
 		$app['bundle.services.full_page.index'] = $app->protect(function() use ($app){
- 			return 'Do full page services index';
+		
+			$introduction = new \OpenBuild\Bundle\Services\Entity\Introduction\Repository\InMemory();
+			$products = new \OpenBuild\Bundle\Services\Entity\Product\Repository\InMemory();
+			$services = new \OpenBuild\Bundle\Services\Entity\Service\Repository\InMemory();
+
+			return $app->render('app/services/index.full.html', [
+				'introduction' => $introduction->getLatest(),
+				'products' => $products->findAll(),
+				'services' => $services->findAll()
+			]);
+		
  		});
  
  		$app['bundle.services.index'] = $app->protect(function() use ($app){
