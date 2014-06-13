@@ -30,7 +30,15 @@ class ServiceController extends AbstractServiceController
 	{
  
  		$app['bundle.terms.full_page.index'] = $app->protect(function() use ($app){
- 			return 'Do full page terms index';
+ 			
+ 			$introduction = new \OpenBuild\Bundle\Terms\Entity\Term\Introduction\Repository\InMemory();
+			$terms = new \OpenBuild\Bundle\Terms\Entity\Term\Term\Repository\InMemory();
+			
+ 			return $app->render('app/terms/index.full.html', [
+				'introduction' => $introduction->getLatest(),
+				'terms' => $terms->findAll(),
+			]);
+			
  		});
  
  		$app['bundle.terms.index'] = $app->protect(function() use ($app){
@@ -81,7 +89,15 @@ class ServiceController extends AbstractServiceController
 		});
 		
 		$app['bundle.terms.full_page.cookies'] = $app->protect(function() use ($app){
- 			return 'Do full page terms cookies';
+ 			
+ 			$introduction = new \OpenBuild\Bundle\Terms\Entity\Cookie\Introduction\Repository\InMemory();
+			$policies = new \OpenBuild\Bundle\Terms\Entity\Cookie\Policy\Repository\InMemory();
+			
+ 			return $app->render('app/terms/cookies.full.html', [
+				'introduction' => $introduction->getLatest(),
+				'policies' => $policies->findAll(),
+			]);
+			
  		});
  
  		$app['bundle.terms.cookies'] = $app->protect(function() use ($app){
@@ -116,8 +132,6 @@ class ServiceController extends AbstractServiceController
 	//Service interface
     public function boot(Application $app)
     {
-
-		
     	
     }
 
