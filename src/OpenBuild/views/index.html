@@ -5,6 +5,7 @@
         
         <meta charset="utf-8" />
         <meta name="fragment" content="!">
+        <noscript><meta http-equiv="refresh" content="0; url=?_escaped_fragment_"></noscript>
         <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -33,7 +34,28 @@
 		<![endif]-->
 
 		<script type="text/javascript">
+/*
+if(window.speechSynthesis){ //&& speechSynthesis.getVoices().length != 0){
 
+	var text = new SpeechSynthesisUtterance("Hello, we are going to have some fun!");
+	window.speechSynthesis.speak(text);
+
+	speechSynthesis.getVoices().forEach(function(voice) {
+    	console.log(voice.name);
+	});
+	
+	speechSynthesis.getVoices().forEach(function(voice){ 
+
+		var name = voice.name, speech = new SpeechSynthesisUtterance("Hello, my name is " + name);
+		speech.voice = voice;
+		speechSynthesis.speak(speech);
+	
+	});
+
+}else{
+	alert('No speech :(');
+}
+*/
 			// Let the library know where WebSocketMain.swf is:
 			window.WEB_SOCKET_SWF_LOCATION = "/lib/web-socket-js/WebSocketMain.swf";
 			window.WEB_SOCKET_DEBUG = true;
