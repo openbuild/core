@@ -16,7 +16,7 @@ class InMemory implements Repository
 
         $this->descriptions[] = new Entity(
         	new Id(1), 
-        	new Display('We are passionate technologist with a love of open source software and an agile approach to development and can help you deliver the solutions you need in a timely fashion. &nbsp;We specialise in open web technologies including Linux, Apache, Nginx, MySQL, Mongo, PHP, Node.JS on the server and well written Javascript on the client including Durandal, Knockout &amp; jQuery.  We also deliver a iOS app.')
+        	new Display('We are passionate technologist with a love of open source software and an agile approach to development and can help you deliver the solutions you need in a timely fashion. We specialise in open web technologies including Linux, Apache, Nginx, MySQL, Mongo, PHP, Node.JS on the server and well written Javascript on the client including Durandal, Knockout & jQuery.  We can also deliver iOS apps.')
         );
 
     }
