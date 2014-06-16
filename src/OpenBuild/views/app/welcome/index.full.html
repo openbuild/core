@@ -10,9 +10,11 @@
 		{% endfor %}
 	</ul>
 	<h3>What people have said</h3>
-	<ul>
+	<ul id="quotes">
 		{% for quote in quotes %}
-		<li>{{ quote.getQuote().getValue() }}</li>
+		<li>
+			<blockquote><cite>{{ quote.getIndividual().getValue().name }} {{ quote.getIndividual().getValue().position }} </cite> "{{ quote.getQuote().getValue() }}"</blockquote>
+		</li>
 		{% endfor %}
 	</ul>
 	<div class="alert alert-success">
