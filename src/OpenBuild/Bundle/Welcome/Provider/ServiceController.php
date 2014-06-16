@@ -30,19 +30,11 @@ class ServiceController extends AbstractServiceController
 
 		$app['bundle.welcome.full_page.index'] = $app->protect(function() use ($app){
 		
-			$quote = new \OpenBuild\Bundle\Welcome\Entity\Quote\Repository\InMemory();
-
-			$feature = new \OpenBuild\Bundle\Welcome\Entity\Feature\Repository\InMemory();
-
-			$introduction = new \OpenBuild\Bundle\Welcome\Entity\Introduction\Repository\InMemory();
-
-			$description = new \OpenBuild\Bundle\Welcome\Entity\Description\Repository\InMemory();
-		
 			return $app->render('app/welcome/index.full.html', [
-				'introduction' => $introduction->getLatest(),
-				'description' => $description->getLatest(),
-				'quotes' => $quote->findAll(),
-				'features' => $feature->findAll(),
+				'introduction' => $app['welcome.repository.introduction']->getLatest(),
+				'description' => $app['welcome.repository.description']->getLatest(),
+				'quotes' => $app['welcome.repository.quote']->findAll(),
+				'features' => $app['welcome.repository.feature']->findAll(),
 			]);
 		
  		});
@@ -79,12 +71,16 @@ class ServiceController extends AbstractServiceController
 			$appFile = $app['spa_files_dir'] . 'welcome/index.js';
 			
 			if(file_exists($appFile)){
-					
-				return new Response(
-            		file_get_contents($appFile),
-					200,
-					array('content-type' => 'application/javascript')
-				);
+
+				$response = new Response();
+				$response->headers->set('content-type', 'application/javascript');
+
+				return $app->render('app/welcome/index.js', [
+					'introduction' => $app['welcome.repository.introduction']->getLatest(),
+					'description' => $app['welcome.repository.description']->getLatest(),
+					'quotes' => $app['welcome.repository.quote']->findAll(),
+					'features' => $app['welcome.repository.feature']->findAll(),
+				], $response);
 					
 			}else{
 				
@@ -99,7 +95,23 @@ class ServiceController extends AbstractServiceController
 	//Service interface
     public function boot(Application $app)
     {
-    	
+
+		$app['welcome.repository.introduction'] = $app->share(function(){
+			return new \OpenBuild\Bundle\Welcome\Entity\Introduction\Repository\InMemory();
+		});
+
+		$app['welcome.repository.description'] = $app->share(function(){
+			return new \OpenBuild\Bundle\Welcome\Entity\Description\Repository\InMemory();
+		});
+
+    	$app['welcome.repository.quote'] = $app->share(function(){
+			return new \OpenBuild\Bundle\Welcome\Entity\Quote\Repository\InMemory();
+		});
+		
+		$app['welcome.repository.feature'] = $app->share(function(){
+			return new \OpenBuild\Bundle\Welcome\Entity\Feature\Repository\InMemory();
+		});
+    
     }
 
 }
