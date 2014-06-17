@@ -79,7 +79,9 @@ class ServiceController extends AbstractServiceController
     public function boot(Application $app)
     {
 
-		
+		$app['error.repository.message'] = $app->share(function(){
+			return new \OpenBuild\Bundle\Error\Entity\Message\Repository\InMemory();
+		});
     	
     }
 
