@@ -31,12 +31,10 @@ class ServiceController extends AbstractServiceController
  
  		$app['bundle.terms.full_page.index'] = $app->protect(function() use ($app){
  			
- 			$introduction = new \OpenBuild\Bundle\Terms\Entity\Term\Introduction\Repository\InMemory();
-			$terms = new \OpenBuild\Bundle\Terms\Entity\Term\Term\Repository\InMemory();
 			
  			return $app->render('app/terms/index.full.html', [
-				'introduction' => $introduction->getLatest(),
-				'terms' => $terms->findAll(),
+				'introduction' => $app['terms.repository.introduction']->getLatest(),
+				'terms' => $app['terms.repository.term']->findAll(),
 			]);
 			
  		});
@@ -73,13 +71,17 @@ class ServiceController extends AbstractServiceController
 			$appFile = $app['spa_files_dir'] . 'terms/index.js';
 			
 			if(file_exists($appFile)){
-					
-				return new Response(
-            		file_get_contents($appFile),
-					200,
-					array('content-type' => 'application/javascript')
-				);
-					
+				
+				$response = new Response();
+				$response->headers->set('content-type', 'application/javascript');
+
+				return $app->render('app/terms/index.js', [
+					'generic-introduction' => $app['terms.repository.introduction']->getLatest(),
+					'generic-terms' => $app['terms.repository.term']->findAll(),
+					'cookie-introduction' => $app['terms.repository.cookie.introduction']->getLatest(),
+					'cookie-policies' => $app['terms.repository.cookie.policy']->findAll()
+				], $response);
+									
 			}else{
 				
 				$app->abort(404, "Could not find view file index.js");
@@ -90,12 +92,9 @@ class ServiceController extends AbstractServiceController
 		
 		$app['bundle.terms.full_page.cookies'] = $app->protect(function() use ($app){
  			
- 			$introduction = new \OpenBuild\Bundle\Terms\Entity\Cookie\Introduction\Repository\InMemory();
-			$policies = new \OpenBuild\Bundle\Terms\Entity\Cookie\Policy\Repository\InMemory();
-			
  			return $app->render('app/terms/cookies.full.html', [
-				'introduction' => $introduction->getLatest(),
-				'policies' => $policies->findAll(),
+				'introduction' => $app['terms.repository.cookie.introduction']->getLatest(),
+				'policies' => $app['terms.repository.cookie.policy']->findAll()
 			]);
 			
  		});
@@ -132,7 +131,23 @@ class ServiceController extends AbstractServiceController
 	//Service interface
     public function boot(Application $app)
     {
-    	
+
+		$app['terms.repository.introduction'] = $app->share(function(){
+			return new \OpenBuild\Bundle\Terms\Entity\Term\Introduction\Repository\InMemory();
+		});
+		
+		$app['terms.repository.term'] = $app->share(function(){
+			return new \OpenBuild\Bundle\Terms\Entity\Term\Term\Repository\InMemory();
+		});
+
+		$app['terms.repository.cookie.introduction'] = $app->share(function(){
+			return new \OpenBuild\Bundle\Terms\Entity\Cookie\Introduction\Repository\InMemory();
+		});
+		
+		$app['terms.repository.cookie.policy'] = $app->share(function(){
+			return new \OpenBuild\Bundle\Terms\Entity\Cookie\Policy\Repository\InMemory();
+		});
+			
     }
 
 }
