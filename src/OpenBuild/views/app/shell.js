@@ -18,7 +18,7 @@
 				{ route: 'thanks.obd', moduleId: 'thanks/index', nav: false},
             ])
             .buildNavigationModel()
-            .mapUnknownRoutes('error/not-found', 'not-found')
+            .mapUnknownRoutes('error/not-found', '404.obd')
             .activate({ pushState : true });
             
         },
