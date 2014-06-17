@@ -30,12 +30,11 @@ class ServiceController extends AbstractServiceController
 
 		$app['bundle.thanks.full_page.index'] = $app->protect(function() use ($app){
 
-			$introduction = new \OpenBuild\Bundle\Thanks\Entity\Introduction\Repository\InMemory();
-			$message = new \OpenBuild\Bundle\Thanks\Entity\Message\Repository\InMemory();
+			
 
 			return $app->render('app/thanks/index.full.html', [
-				'introduction' => $introduction->getLatest(),
-				'messages' => $message->findAll()
+				'introduction' => $app['thanks.repository.introduction']->getLatest(),
+				'messages' => $app['thanks.repository.message']->findAll()
 			]);
 
  		});
@@ -73,11 +72,13 @@ class ServiceController extends AbstractServiceController
 			
 			if(file_exists($appFile)){
 					
-				return new Response(
-            		file_get_contents($appFile),
-					200,
-					array('content-type' => 'application/javascript')
-				);
+				$response = new Response();
+				$response->headers->set('content-type', 'application/javascript');
+
+				return $app->render('app/thanks/index.js', [
+					'introduction' => $app['thanks.repository.introduction']->getLatest(),
+					'messages' => $app['thanks.repository.message']->findAll()
+				], $response);
 					
 			}else{
 				
@@ -92,7 +93,15 @@ class ServiceController extends AbstractServiceController
 	//Service interface
     public function boot(Application $app)
     {
-    	
+		
+		$app['thanks.repository.introduction'] = $app->share(function(){
+			return new \OpenBuild\Bundle\Thanks\Entity\Introduction\Repository\InMemory();
+		});
+		
+		$app['thanks.repository.message'] = $app->share(function(){
+			return new \OpenBuild\Bundle\Thanks\Entity\Message\Repository\InMemory();
+		});
+    
     }
 
 }
