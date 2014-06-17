@@ -80,12 +80,6 @@ class ServiceController extends AbstractServiceController
 					'services' => $app['services.repository.service']->findAll()
 				], $response);
 				
-				return new Response(
-            		file_get_contents($appFile),
-					200,
-					array('content-type' => 'application/javascript')
-				);
-					
 			}else{
 				
 				$app->abort(404, "Could not find view file index.js");
