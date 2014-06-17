@@ -30,14 +30,10 @@ class ServiceController extends AbstractServiceController
 	
 		$app['bundle.services.full_page.index'] = $app->protect(function() use ($app){
 		
-			$introduction = new \OpenBuild\Bundle\Services\Entity\Introduction\Repository\InMemory();
-			$products = new \OpenBuild\Bundle\Services\Entity\Product\Repository\InMemory();
-			$services = new \OpenBuild\Bundle\Services\Entity\Service\Repository\InMemory();
-
 			return $app->render('app/services/index.full.html', [
-				'introduction' => $introduction->getLatest(),
-				'products' => $products->findAll(),
-				'services' => $services->findAll()
+				'introduction' => $app['services.repository.introduction']->getLatest(),
+				'products' => $app['services.repository.product']->findAll(),
+				'services' => $app['services.repository.service']->findAll()
 			]);
 		
  		});
@@ -74,7 +70,16 @@ class ServiceController extends AbstractServiceController
 			$appFile = $app['spa_files_dir'] . 'services/index.js';
 			
 			if(file_exists($appFile)){
-					
+				
+				$response = new Response();
+				$response->headers->set('content-type', 'application/javascript');
+
+				return $app->render('app/services/index.js', [
+					'introduction' => $app['services.repository.introduction']->getLatest(),
+					'products' => $app['services.repository.product']->findAll(),
+					'services' => $app['services.repository.service']->findAll()
+				], $response);
+				
 				return new Response(
             		file_get_contents($appFile),
 					200,
@@ -95,7 +100,17 @@ class ServiceController extends AbstractServiceController
     public function boot(Application $app)
     {
 
-		
+		$app['services.repository.introduction'] = $app->share(function(){
+			return new \OpenBuild\Bundle\Services\Entity\Introduction\Repository\InMemory();
+		});
+
+		$app['services.repository.product'] = $app->share(function(){
+			return new \OpenBuild\Bundle\Services\Entity\Product\Repository\InMemory();
+		});
+    	
+    	$app['services.repository.service'] = $app->share(function(){
+			return new \OpenBuild\Bundle\Services\Entity\Service\Repository\InMemory();
+		});
     	
     }
 
