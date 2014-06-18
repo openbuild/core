@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the OpenBuild framework.
+ * This file is part of the OpenBuild framework https://github.com/openbuild/core
  *
  * (c) Danny Lewis <openbuild.sheffield@googlemail.com>
  *
