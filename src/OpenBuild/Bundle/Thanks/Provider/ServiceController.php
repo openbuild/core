@@ -77,24 +77,14 @@ class ServiceController extends AbstractServiceController
 		
 		$app['bundle.thanks.index.js'] = $app->protect(function() use ($app){
 		
-			$appFile = $app['spa_files_dir'] . 'thanks/index.js';
-			
-			if(file_exists($appFile)){
-					
-				$response = new Response();
-				$response->headers->set('content-type', 'application/javascript');
+			$response = new Response();
+			$response->headers->set('content-type', 'application/javascript');
 
-				return $app->render('app/thanks/index.js', [
-					'introduction' => $app['thanks.repository.introduction']->getLatest(),
-					'messages' => $app['thanks.repository.message']->findAll()
-				], $response);
-					
-			}else{
-				
-				$app->abort(404, "Could not find view file index.js");
-				
-			}
-		
+			return $app->render('app/thanks/index.js', [
+				'introduction' => $app['thanks.repository.introduction']->getLatest(),
+				'messages' => $app['thanks.repository.message']->findAll()
+			], $response);
+
 		});
 	   
     }
