@@ -47,7 +47,7 @@ class InMemory implements Repository
         	new Title('Developers for your projects'),
         	new Description('Have you got an in house project but need solid developers to deliver?
 
-Get in [contact](/contact.obd) and see what we can do for you.')
+Get in [contact](/contact-us.obd) and see what we can do for you.')
     	);
     	
     }
