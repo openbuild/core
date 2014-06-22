@@ -94,6 +94,11 @@ class ServiceController extends AbstractServiceController
 	//Service interface
     public function boot(Application $app)
     {
+    
+		$app['dispatcher']->addSubscriber(new \OpenBuild\Bundle\Welcome\Event\Test\Subscriber($app));
+
+		$event = new \OpenBuild\Bundle\Welcome\Event\Test\Event\Create(array('testing...'));
+		$event = $app['dispatcher']->dispatch(\OpenBuild\Bundle\Welcome\Event\Test\Name::create, $event);
 
 		$app['welcome.repository.introduction'] = $app->share(function(){
 			return new \OpenBuild\Bundle\Welcome\Entity\Introduction\Repository\InMemory();
