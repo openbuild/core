@@ -97,7 +97,7 @@
 			$app->register(new \Silex\Provider\UrlGeneratorServiceProvider());
 
 			$app['security.user_provider.dummy'] = $app->share(function() use ($app){
-				return new \Openbuild\Provider\UserDummy();
+				return new \OpenBuild\Provider\UserDummy();
 			});
 			
 			$app['security.firewalls'] = array(
@@ -114,6 +114,33 @@
 					'dummy' => true,
 				),
 			);
+			
+			$app->register(new \Silex\Provider\SecurityServiceProvider());
+			
+			$app['security.authentication_listener.factory.dummy'] = $app->protect(function ($name, $options) use ($app){
+
+				// define the authentication provider object
+				$app['security.authentication_provider.'.$name.'.dummy'] = $app->share(function () use ($app){
+					return new \OpenBuild\Security\Dummy\Provider($app['security.user_provider.dummy'], __DIR__.'/security_cache');
+				});
+
+				// define the authentication listener object
+				$app['security.authentication_listener.'.$name.'.dummy'] = $app->share(function () use ($app){
+					return new \OpenBuild\Security\Dummy\Listener($app['security'], $app['security.authentication_manager']);
+				});
+
+				return array(
+					// the authentication provider id
+					'security.authentication_provider.'.$name.'.dummy',
+					// the authentication listener id
+					'security.authentication_listener.'.$name.'.dummy',
+					// the entry point id
+					null,
+					// the position of the listener in the stack
+					'pre_auth'
+				);
+				
+			});
 
 			$app->before(function(Request $request) use ($app){
 			
