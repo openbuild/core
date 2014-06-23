@@ -28,7 +28,8 @@ class Listener{
 	public function handle(GetResponseEvent $event){
 		
 		$request = $event->getRequest();
-
+		$email = 'test@test.com';
+		
 		$token = new Token();
 		$token->setUser($email);
 
