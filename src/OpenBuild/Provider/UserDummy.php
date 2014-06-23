@@ -22,7 +22,7 @@ class UserDummy implements UserProviderInterface
 	public function loadUserByUsername($email)
 	{
 
-		$user = array();
+		$user = array('email' => 'test@test.com', 'roles' => array('developer'));
 		$roles = array();
 			
 		if(isset($user['roles'])){
