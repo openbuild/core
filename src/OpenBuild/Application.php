@@ -96,6 +96,25 @@
 			
 			$app->register(new \Silex\Provider\UrlGeneratorServiceProvider());
 
+			$app['security.user_provider.dummy'] = $app->share(function() use ($app){
+				return new \Openbuild\Provider\UserDummy();
+			});
+			
+			$app['security.firewalls'] = array(
+				//Login is not protected
+				'login' => array(
+					'pattern' => '^/login.obd$',
+					'security' => false,
+				),
+				//Everything else is protected
+				'all' => array(
+					'pattern' => '^.*$',
+					'stateless' => true,
+					'security' => true,
+					'dummy' => true,
+				),
+			);
+
 			$app->before(function(Request $request) use ($app){
 			
 				if($app['spa'] === false || $request->query->get('_escaped_fragment_') !== null){
@@ -117,6 +136,9 @@
 
 				return $request;
 
+			});
+			
+			$this->after(function (Request $request, Response $response){
 			});
 			
 			$this->mount('/app',   new \OpenBuild\Provider\AppServiceController($app));
