@@ -14,6 +14,7 @@
 				{ route: 'flickr.obd', title:'Flickr', moduleId: 'flickr/index', nav: true },
 				{ route: 'products-and-services.obd', title:'Products &amp; Services', moduleId: 'services/index', nav: true },
 				{ route: 'contact-us.obd', title:'Contact Us', moduleId: 'contact/index', nav: true },
+				{ route: 'signup.obd', title:'Signup', moduleId: 'signup/index', nav: true },
 				{ route: 'terms(-:page).obd', moduleId: 'terms/index', nav: false},
 				{ route: 'thanks.obd', moduleId: 'thanks/index', nav: false},
             ])
