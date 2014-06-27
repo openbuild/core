@@ -5,6 +5,11 @@
 	"license": "GPL3, MIT",
 	"require": {
 		"php": ">=5.4.0",
+		"ext-curl": "*",
+		"ext-mongo": "*",
+		"ext-openssl": "*",
+		"ext-PDO": "*",
+		"ext-pdo_mysql": "*",
 		"erusev/parsedown": ">=0.9.4",
 		"cboden/Ratchet": "@dev",
 		"guzzlehttp/guzzle": "~4.0",
