@@ -81,9 +81,9 @@
 		use \Silex\Application\TranslationTrait;
 				
 		public function configure(){
-			
+		
 			$app = $this;
-			
+
 			$app['debug'] = true;
 			$app['spa'] = true;
 			$app['search_engine'] = false;
@@ -104,6 +104,10 @@
 				//Login is not protected
 				'login' => array(
 					'pattern' => '^/login.obd$',
+					'security' => false,
+				),
+				'signup' => array(
+					'pattern' => '^/signup.obd$',
 					'security' => false,
 				),
 				//Everything else is protected
@@ -176,6 +180,7 @@
 				$this->mount('/contact',   new \OpenBuild\Bundle\Contact\Provider\ServiceController($app));
 				$this->mount('/flickr',    new \OpenBuild\Bundle\Flickr\Provider\ServiceController($app));
 				$this->mount('/services',  new \OpenBuild\Bundle\Services\Provider\ServiceController($app));
+				$this->mount('/signup',    new \OpenBuild\Bundle\Signup\Provider\ServiceController($app));
 				$this->mount('/terms',     new \OpenBuild\Bundle\Terms\Provider\ServiceController($app));
 				$this->mount('/thanks',    new \OpenBuild\Bundle\Thanks\Provider\ServiceController($app));
 				$this->mount('/welcome',   new \OpenBuild\Bundle\Welcome\Provider\ServiceController($app));
@@ -187,6 +192,7 @@
 				$this->mount('/app/error',     new \OpenBuild\Bundle\Error\Provider\ServiceController($app));
 				$this->mount('/app/flickr',    new \OpenBuild\Bundle\Flickr\Provider\ServiceController($app));
 				$this->mount('/app/services',  new \OpenBuild\Bundle\Services\Provider\ServiceController($app));
+				$this->mount('/app/signup',    new \OpenBuild\Bundle\Signup\Provider\ServiceController($app));
 				$this->mount('/app/terms',     new \OpenBuild\Bundle\Terms\Provider\ServiceController($app));
 				$this->mount('/app/thanks',    new \OpenBuild\Bundle\Thanks\Provider\ServiceController($app));
 				$this->mount('/app/welcome',   new \OpenBuild\Bundle\Welcome\Provider\ServiceController($app));
@@ -210,20 +216,30 @@
 				'/contact-us.obd' => 'contact-index',
 				'/flickr.obd' => 'flickr-index',
 				'/products-and-services.obd' => 'services-index',
+				'/signup.obd' => 'signup-index',
 				'/terms.obd' => 'terms-index',
 				'/terms-cookies.obd' => 'terms-cookies',
 				'/thanks.obd' => 'thanks-index'
 			);
 	
-			$this->get('/{page}.obd', function(Request $request) use ($app){
-			
+			$this->match('/{page}.obd', function(Request $request) use ($app){
+
 				if($request->query->get('_escaped_fragment_') !== null){
 
 					if(isset($app['spaSearchEngineMap'][$request->getPathInfo()])){
-					
-						$uri = $app['url_generator']->generate($app['spaSearchEngineMap'][$request->getPathInfo()]);
-						$subRequest = Request::create($uri, 'GET');
+
+						$subRequest = Request::create(
+							$app['url_generator']->generate($app['spaSearchEngineMap'][$request->getPathInfo()]), 
+							$request->getMethod(),
+							$request->request->all(),
+							$request->cookies->all(),
+							$request->files->all(),
+							$request->server->all(),
+							$request->getContent()
+						);
+
 						$response = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST, false);
+
 						return $response->getContent();
 					
 					}else{
@@ -238,108 +254,7 @@
 				return $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
 
 			});
-
-/*			
-			$this->get('/{path}', function(\Symfony\Component\HttpFoundation\Request $request, $path) use ($app){
-
-				if(
-					! is_null($request->query->get('_escaped_fragment_'))
-					||
-					$request->getRequestUri() == '/?_escaped_fragment_='
-				){
-					return "Do html fragment for $path";
-				}
-
-				$fullPath = $app['bootDirectory'] . '/' . $app['serve'] . '/App/index.html';
-			
-				if(file_exists($fullPath)){
-					return file_get_contents($fullPath);
-				}
-				
-				$fullPath = $app['bootDirectory'] . '/__default/App/index.html';
-			
-				if(file_exists($fullPath)){
-					return file_get_contents($fullPath);
-				}
-				
-				$app->abort(404, "Could not file file /app/$path.$extension .");
-			
-			})
-			->value('path', 'index.obd')
-			->assert('path', '(.*).obd')
-			->convert('path', function($path){
-				return substr($path, 0, -4);
-			});
-
-			$this->get('/app/{path}.{extension}', function(\Symfony\Component\HttpFoundation\Request $request, $path, $extension) use ($app){
-
-				$fullPath = $app['bootDirectory'] . '/' . $app['serve'] . '/App/' . $path . '.' . $extension;
-//die($fullPath);		
-				if(file_exists($fullPath)){
-					return file_get_contents($fullPath);
-				}
-				
-				$fullPath = $app['bootDirectory'] . '/__default/App/' . $path . '.' . $extension;
-		
-				if(file_exists($fullPath)){
-					return file_get_contents($fullPath);
-				}
-				
-				$app->abort(404, "Could not file file /app/$path.$extension .");
-		
-			})
-			->assert('path', '[\w\d-_\/]+')
-			//->assert('path', '.*')
-			->assert('extension', '(js|html)');
-			
-			$this->post('/test1', function(\Symfony\Component\HttpFoundation\Request $request) use ($app){
-								
-				$result = array(
-					'error' => false,
-					'uri' => 'growl',
-					'payload' => array(
-						'message' => 'w00t test 1',
-						'data' => $request->request->get('fu')
-					),
-					'request' => $request,
-				);
-				
-				return $app->json($result);
-				
-			});
-
-			$this->post('/test2', function(\Symfony\Component\HttpFoundation\Request $request) use ($app){
-
-				$result = array(
-					'error' => false,
-					'uri' => 'growl',
-					'payload' => array(
-						'message' => 'w00t test 2',
-						'data' => $request->request->get('fu')
-					),
-					'request' => $request,
-				);
-				
-				return $app->json($result);
-				
-			});
-			
-			$this->post('/test3', function(\Symfony\Component\HttpFoundation\Request $request) use ($app){
-
-				$result = array(
-					'error' => false,
-					'uri' => 'growl',
-					'payload' => array(
-						'message' => 'w00t test 3',
-						'data' => $request->request->get('fu')
-					),
-					'request' => $request,
-				);
-				
-				return $app->json($result);
-				
-			});
-*/			
+	
 		}
 
 		static function getInstance(){
