@@ -15,7 +15,7 @@
     	<p>Please fill out the form below and we will generate a certificate for you, this will be automatically downloaded and installed onto your machine and we will also e-mail it to you so you can login on other devices.</p>
     </div>
 	
-	<form role="form" data-bind="submit:send">
+	<form role="form" data-bind="submit:send" method="post">
 
 		<fieldset>
 			<legend>Signup</legend>
@@ -23,7 +23,7 @@
 			<div class="form-group" data-bind="css: firstNameStatus">
 				<div class="input-group">
 					<span class="input-group-addon"><label for="firstName">First Name</label></span>
-					<input type="text" data-bind="value: firstName, valueUpdate: 'afterkeydown'" id="firstName" class="form-control" placeholder="First name">
+					<input type="text" name="firstName" data-bind="value: firstName, valueUpdate: 'afterkeydown'" id="firstName" class="form-control" placeholder="First name">
 					<span class="input-group-btn">
 						<button class="btn btn-default" type="button" data-bind="click: help.bind($data, 'firstName')">
 							<span class="glyphicon glyphicon-question-sign"></span>
@@ -36,7 +36,7 @@
 			<div class="form-group" data-bind="css: lastNameStatus">
 				<div class="input-group">
 					<span class="input-group-addon"><label for="lastName">Last Name</label></span>
-					<input type="text" data-bind="value: lastName" id="lastName" class="form-control" placeholder="Last name">
+					<input type="text" name="lastName" data-bind="value: lastName" id="lastName" class="form-control" placeholder="Last name">
 					<span class="input-group-btn">
 						<button class="btn btn-default" type="button" data-bind="click: help.bind($data, 'lastName')">
 							<span class="glyphicon glyphicon-question-sign"></span>
@@ -49,7 +49,7 @@
 			<div class="form-group" data-bind="css: emailStatus">
 				<div class="input-group">
 					<span class="input-group-addon"><label for="email">E-Mail</label></span>
-					<input type="email" data-bind="value: email" id="email" class="form-control" placeholder="E-Mail address">
+					<input type="email" name="email" data-bind="value: email" id="email" class="form-control" placeholder="E-Mail address">
 					<span class="input-group-btn">
 						<button class="btn btn-default" type="button" data-bind="click: help.bind($data, 'email')">
 							<span class="glyphicon glyphicon-question-sign"></span>
@@ -62,7 +62,7 @@
 			<div class="form-group" data-bind="css: passwordStatus">
 				<div class="input-group">
 					<span class="input-group-addon"><label for="password">Password</label></span>
-					<input type="password" data-bind="value: password" id="password" class="form-control" placeholder="Password">
+					<input type="password" name="password" data-bind="value: password" id="password" class="form-control" placeholder="Password">
 					<span class="input-group-btn">
 						<button class="btn btn-default" type="button" data-bind="click: help.bind($data, 'password')">
 							<span class="glyphicon glyphicon-question-sign"></span>
@@ -75,7 +75,7 @@
 			<div class="form-group" data-bind="css: passwordRepeatStatus">
 				<div class="input-group">
 					<span class="input-group-addon"><label for="passwordRepeat">Repeat Password</label></span>
-					<input type="password" data-bind="value: passwordRepeat" id="passwordRepeat" class="form-control" placeholder="Repeat Password">
+					<input type="password" name="passwordRepeat" data-bind="value: passwordRepeat" id="passwordRepeat" class="form-control" placeholder="Repeat Password">
 					<span class="input-group-btn">
 						<button class="btn btn-default" type="button" data-bind="click: help.bind($data, 'passwordRepeat')">
 							<span class="glyphicon glyphicon-question-sign"></span>
@@ -88,7 +88,7 @@
 			<div class="form-group" data-bind="css: cityStatus">
 				<div class="input-group">
 					<span class="input-group-addon"><label for="city">Town or City</label></span>
-					<input type="text" data-bind="value: city" id="city" class="form-control" placeholder="Town or City">
+					<input type="text" name="city" data-bind="value: city" id="city" class="form-control" placeholder="Town or City">
 					<span class="input-group-btn">
 						<button class="btn btn-default" type="button" data-bind="click: help.bind($data, 'city')">
 							<span class="glyphicon glyphicon-question-sign"></span>
@@ -101,7 +101,7 @@
 			<div class="form-group" data-bind="css: countyStatus">
 				<div class="input-group">
 					<span class="input-group-addon"><label for="county">County, State or Province</label></span>
-					<input type="text" data-bind="value: county" id="county" class="form-control" placeholder="County, State or Province">
+					<input type="text" name="county" data-bind="value: county" id="county" class="form-control" placeholder="County, State or Province">
 					<span class="input-group-btn">
 						<button class="btn btn-default" type="button" data-bind="click: help.bind($data, 'county')">
 							<span class="glyphicon glyphicon-question-sign"></span>
@@ -114,7 +114,7 @@
 			<div class="form-group" data-bind="css: countryStatus">
 				<div class="input-group">
 					<span class="input-group-addon"><label for="country">Country</label></span>
-					<input type="text" data-bind="value: county" id="country" class="form-control" placeholder="Country">
+					<input type="text" name="country" data-bind="value: county" id="country" class="form-control" placeholder="Country">
 					<span class="input-group-btn">
 						<button class="btn btn-default" type="button" data-bind="click: help.bind($data, 'country')">
 							<span class="glyphicon glyphicon-question-sign"></span>
