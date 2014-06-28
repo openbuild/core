@@ -25,7 +25,7 @@ class ServiceController extends AbstractServiceController
 	{
 
 		$controllers = $this->mapControllers($app, array(
-			'signup-index.html' => true,
+			'signup-index.html' => array('methods' => array('get', 'post')),
 			'signup-index.js' => true
 		));
 
@@ -39,8 +39,22 @@ class ServiceController extends AbstractServiceController
  
  		$app['bundle.signup.full_page.index'] = $app->protect(function() use ($app){
 
-			return $app->render('app/signup/index.full.html', [
-			]);
+			$localFile = $app['request']->server->get('DOCUMENT_ROOT') . '../views/app/signup/index.full.html';
+			$appFile = $app['spa_files_dir'] . 'signup/index.full.html';
+
+			if($app['request']->getMethod() == 'POST'){
+var_dump($app['request']->request->all());
+			
+			}
+
+
+			if(file_exists($localFile)){
+				return $app->render($localFile, [
+				]);
+			}else{
+				return $app->render('app/signup/index.full.html', [
+				]);
+			}
 
  		});
  
@@ -92,6 +106,26 @@ class ServiceController extends AbstractServiceController
 		});
 		
     }
+
+/*
+			
+			$test = new \OpenBuild\Security\Certificate\Generate();
+			
+			$test->setDnCountryName('UK');
+			$test->setDnStateOrProvinceName('South Yorkshire');
+			$test->setDnLocalityName('Sheffield');
+			$test->setDnOrganizationName('OpenBuild (Sheffield) LTD');
+			$test->setDnOrganizationalUnitName('Development');
+			$test->setDnCommonName('Danny Lewis');
+			$test->setDnEmailAddress('dannylewis.sheffield@googlemail.com');
+	
+			$test->setPassword('letmein');
+	
+			$test->export();
+			var_dump($test);
+			die();
+
+*/
 
 	//Service interface
     public function boot(Application $app)
