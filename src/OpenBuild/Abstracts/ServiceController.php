@@ -33,7 +33,7 @@ abstract class ServiceController implements ServiceProviderInterface, Controller
 	
 		$controllers = $app['controllers_factory'];
 
-		foreach($map AS $key => $fullPage){
+		foreach($map AS $key => $config){
 		
 			$split = preg_split('/(\.|-)/', $key);	
 		
@@ -58,9 +58,9 @@ abstract class ServiceController implements ServiceProviderInterface, Controller
 			var_dump($uri);
 			var_dump($spa);
 			var_dump($full);
-			var_dump($fullPage);
+			var_dump($config);
 */
-			$func = function(Application $app) use ($spa, $full, $fullPage){
+			$func = function(Application $app) use ($spa, $full, $config){
 			
 				if($app['spa'] === true && $app['search_engine'] === false){
 					return $app[$spa]();
@@ -70,7 +70,15 @@ abstract class ServiceController implements ServiceProviderInterface, Controller
 			
 			};
 			
-			$controllers->get($uri, $func)->bind($bind);
+			if(is_array($config) && isset($config['methods'])){
+
+				$controllers->match($uri, $func)->bind($bind)->method(strtoupper(implode('|', $config['methods'])));
+			
+			}else{
+			
+				$controllers->get($uri, $func)->bind($bind);
+			
+			}
 		
 		}
 
