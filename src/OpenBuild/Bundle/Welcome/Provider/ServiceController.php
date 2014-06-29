@@ -29,6 +29,8 @@ class ServiceController extends AbstractServiceController
 			'welcome-index.js' => true
 		));
 
+		$app['twig.loader.filesystem']->addPath(__DIR__.'/../View', 'welcome');
+
 		return $controllers;
 
 	}
@@ -39,39 +41,18 @@ class ServiceController extends AbstractServiceController
 
 		$app['bundle.welcome.full_page.index'] = $app->protect(function() use ($app){
 		
-			return $app->render('app/welcome/index.full.html', [
+			return $app->render('@welcome/index.full.html', [
 				'introduction' => $app['welcome.repository.introduction']->getLatest(),
 				'description' => $app['welcome.repository.description']->getLatest(),
 				'quotes' => $app['welcome.repository.quote']->findAll(),
-				'features' => $app['welcome.repository.feature']->findAll(),
+				'features' => $app['welcome.repository.feature']->findAll()			
 			]);
 		
  		});
  
  		$app['bundle.welcome.index'] = $app->protect(function() use ($app){
 
-			$localFile = $app['request']->server->get('DOCUMENT_ROOT') . '../views/app/welcome/index.html';
-			$appFile = $app['spa_files_dir'] . 'welcome/index.html';
-			
-			if(file_exists($localFile)){
-			
-				return new Response(
-            		file_get_contents($localFile),
-					200
-				);
-				
-			}elseif(file_exists($appFile)){
-					
-				return new Response(
-            		file_get_contents($appFile),
-					200
-				);
-					
-			}else{
-				
-				$app->abort(404, "Could not find view file welcome/index.html");
-				
-			}
+			return $app->render('@welcome/index.html', []);
 
 		});
 		
@@ -79,12 +60,12 @@ class ServiceController extends AbstractServiceController
 		
 			$response = new Response();
 			$response->headers->set('content-type', 'application/javascript');
-
-			return $app->render('app/welcome/index.js', [
+			
+			return $app->render('@welcome/index.js', [
 				'introduction' => $app['welcome.repository.introduction']->getLatest(),
 				'description' => $app['welcome.repository.description']->getLatest(),
 				'quotes' => $app['welcome.repository.quote']->findAll(),
-				'features' => $app['welcome.repository.feature']->findAll(),
+				'features' => $app['welcome.repository.feature']->findAll()			
 			], $response);
 					
 		});
