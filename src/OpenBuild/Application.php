@@ -88,11 +88,19 @@
 			$app['spa'] = true;
 			$app['search_engine'] = false;
 			
-			$app['spa_files_dir'] = dirname(__FILE__) . '/views/app/';
+			//$app['spa_files_dir'] = dirname(__FILE__) . '/views/app/';
 			
 			$app->register(new \Silex\Provider\TwigServiceProvider(), array(
-				'twig.path' => __DIR__.'/views',
+				//'twig.path' => __DIR__.'/views',
+				'twig.options' => array(
+					'cache'     => __DIR__.'/Cache',
+					'strict_variables' => true,
+					'debug' => true,
+					'autoescape' => true
+				)
 			));
+			
+			$app['twig.loader.filesystem']->addPath(__DIR__.'/Layout', 'layout');
 			
 			$app->register(new \Silex\Provider\UrlGeneratorServiceProvider());
 
