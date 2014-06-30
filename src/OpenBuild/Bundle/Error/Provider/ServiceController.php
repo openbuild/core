@@ -24,53 +24,23 @@ class ServiceController extends AbstractServiceController
 	public function connect(Application $app)
 	{
 	
+		$app['twig.loader.filesystem']->addPath(__DIR__.'/../View', 'error');
+	
 		// creates a new controller based on the default route
 		$controllers = $app['controllers_factory'];
 
 		$controllers->get('/not-found.html', function (Application $app){
 				
-			$localFile = $app['request']->server->get('DOCUMENT_ROOT') . '../views/app/error/not-found.html';
-			$appFile = $app['spa_files_dir'] . 'error/not-found.html';
-			
-			if(file_exists($localFile)){
-			
-				return new Response(
-            		file_get_contents($localFile),
-					200
-				);
-				
-			}elseif(file_exists($appFile)){
-					
-				return new Response(
-            		file_get_contents($appFile),
-					200
-				);
-					
-			}else{
-				
-				$app->abort(404, "Could not find view file error/not-found.html");
-				
-			}
+			return $app->render('@error/not-found.html', []);
 			
 		});
 
 		$controllers->get('/not-found.js', function (Application $app){
 		
-			$appFile = $app['spa_files_dir'] . 'error/not-found.js';
+			$response = new Response();
+			$response->headers->set('content-type', 'application/javascript');
 			
-			if(file_exists($appFile)){
-					
-				return new Response(
-            		file_get_contents($appFile),
-					200,
-					array('content-type' => 'application/javascript')
-				);
-					
-			}else{
-				
-				$app->abort(404, "Could not find view file error/not-found.js");
-				
-			}
+			return $app->render('@error/not-found.js', [], $response);
 			
 		});
 
