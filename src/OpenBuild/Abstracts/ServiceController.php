@@ -36,10 +36,14 @@ abstract class ServiceController implements ServiceProviderInterface, Controller
 		foreach($map AS $key => $config){
 		
 			$split = preg_split('/(\.|-)/', $key);	
-		
+
 			$module = $split[0];
-			$page = $split[1];
-			$extension = $split[2];
+			$extension = $split[count($split) - 1];
+
+			unset($split[count($split) - 1]);
+			unset($split[0]);
+			
+			$page = implode('-', $split);
 			
 			$bind = $module . '-' . $page;
 			$uri  = '/'. $page . '.' . $extension;
