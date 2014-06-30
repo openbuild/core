@@ -30,6 +30,8 @@ class ServiceController extends AbstractServiceController
 			'flickr-detail.html' => true
 		));
 
+		$app['twig.loader.filesystem']->addPath(__DIR__.'/../View', 'flickr');
+
 		return $controllers;
 
 	}
@@ -39,84 +41,31 @@ class ServiceController extends AbstractServiceController
 	{
 
 		$app['bundle.flickr.full_page.index'] = $app->protect(function() use ($app){
- 			return 'Do full page flickr index';
+ 			return $app->render('@flickr/index.full.html', []);
  		});
  
  		$app['bundle.flickr.index'] = $app->protect(function() use ($app){
 
-			$localFile = $app['request']->server->get('DOCUMENT_ROOT') . '../views/app/flickr/index.html';
-			$appFile = $app['spa_files_dir'] . 'flickr/index.html';
-			
-			if(file_exists($localFile)){
-			
-				return new Response(
-            		file_get_contents($localFile),
-					200
-				);
-				
-			}elseif(file_exists($appFile)){
-					
-				return new Response(
-            		file_get_contents($appFile),
-					200
-				);
-					
-			}else{
-				
-				$app->abort(404, "Could not find view file flickr/index.html");
-				
-			}
+			return $app->render('@flickr/index.html', []);
 			
 		});  
 
 		$app['bundle.flickr.index.js'] = $app->protect(function() use ($app){
 		
-			$appFile = $app['spa_files_dir'] . 'flickr/index.js';
-			
-			if(file_exists($appFile)){
-					
-				return new Response(
-            		file_get_contents($appFile),
-					200,
-					array('content-type' => 'application/javascript')
-				);
-					
-			}else{
-				
-				$app->abort(404, "Could not find view file flickr/index.js");
-				
-			}
+			$response = new Response();
+			$response->headers->set('content-type', 'application/javascript');
+		
+			return $app->render('@flickr/index.js', [], $response);
 		
 		});
 
 		$app['bundle.flickr.full_page.detail'] = $app->protect(function() use ($app){
- 			return 'Do full page flickr detail';
+ 			return $app->render('@flickr/detail.full.html', []);
  		});
  
  		$app['bundle.flickr.detail'] = $app->protect(function() use ($app){
 
-			$localFile = $app['request']->server->get('DOCUMENT_ROOT') . '../views/app/flickr/detail.html';
-			$appFile = $app['spa_files_dir'] . 'flickr/detail.html';
-			
-			if(file_exists($localFile)){
-			
-				return new Response(
-            		file_get_contents($localFile),
-					200
-				);
-				
-			}elseif(file_exists($appFile)){
-					
-				return new Response(
-            		file_get_contents($appFile),
-					200
-				);
-					
-			}else{
-				
-				$app->abort(404, "Could not find view file filickr/detail.html");
-				
-			}
+			return $app->render('@flickr/detail.html', []);
 			
 		});   
 
