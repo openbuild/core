@@ -32,22 +32,25 @@ class AppServiceController extends AbstractServiceController
 
 			$controllers->get('/{name}.{extension}', function(Request $request, $name, $extension) use ($app){
 			
-				$appFile = $app['spa_files_dir'] . $name . '.' . $extension;
+				$action = 'bundle.' . $app['spa_handler'] . '.' . $name;
+				
+				$extension == 'js' ? $action .= '.' . $extension : '';
 
-				if(file_exists($appFile)){
+				if(isset($app[$action])){
 
-					return new Response(
-						file_get_contents($appFile),
-						200,
-						$extension == 'js' ? array('content-type' => 'application/javascript') : array()
-					);
+					$uri = '/app/' . $app['spa_handler'] . '/' . $name . '.' . $extension;
+					$subRequest = Request::create($uri, 'GET', $app['request']->request->all(), $app['request']->cookies->all(), $app['request']->files->all(), $app['request']->server->all(), $app['request']->getContent());
 
-				}else{
-					$app->abort(404, "Could not find view file app/$name.$extension");
+					$response = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST, false);
+			
+					return $response;
+
 				}
+				
+				$app->abort(404, "Could not find view file app/$name.$extension");
 			
 			})
-			->assert('name', 'main|shell|message-html')
+			//->assert('name', 'main|shell|message-html')
 			->assert('extension', 'html|js');
 
 		}
@@ -65,11 +68,7 @@ class AppServiceController extends AbstractServiceController
 			//TODO - Configure the home page to any module
 			$uri = $app['url_generator']->generate('welcome-index');
 
-			$subRequest = Request::create($uri, 'GET', array(), $app['request']->cookies->all(), array(), $app['request']->server->all());
-
-			if($app['request']->getSession()){
-				$subRequest->setSession($app['request']->getSession());
-			}
+			$subRequest = Request::create($uri, 'GET', $app['request']->request->all(), $app['request']->cookies->all(), $app['request']->files->all(), $app['request']->server->all(), $app['request']->getContent());
 
 			$response = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST, false);
 			
@@ -77,30 +76,16 @@ class AppServiceController extends AbstractServiceController
 
  		});
  		
-		$app['page.home'] = $app->protect(function() use ($app){
+		$app['page.home.spa'] = $app->protect(function() use ($app){
 
-			$localFile = $app['request']->server->get('DOCUMENT_ROOT') . '../views/index.html';
-			$appFile = $app['spa_files_dir'] . '../index.html';
+			$uri = $app['url_generator']->generate($app['spa_handler'] . '-index');
 
-			if(file_exists($localFile)){
+			$subRequest = Request::create($uri, 'GET', $app['request']->request->all(), $app['request']->cookies->all(), $app['request']->files->all(), $app['request']->server->all(), $app['request']->getContent());
+
+			$response = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST, false);
 			
-				return new Response(
-            		file_get_contents($localFile),
-					200
-				);
-				
-			}elseif(file_exists($appFile)){
-					
-				return new Response(
-            		file_get_contents($appFile),
-					200
-				);
-					
-			}else{
-				
-				$app->abort(404, "Could not find view file /index.html");
-				
-			}
+			return $response;
+
 
 		});
 		
