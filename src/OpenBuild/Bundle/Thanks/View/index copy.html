@@ -1,11 +1,46 @@
 <div class="jumbotron">
 	<div class="container">
-		<h1>Thanks</h1>
-		<p>We would you like to say a big thank you to all producers of content, languages and other forms of inspiration.</p>
+		<h1 data-bind="html:introductionTitle"></h1>
+		<p data-bind="html:introductionBody"></p>
 	</div>
 </div>
 
+<script id="templateStartRow" type="text/html">
+	<div class="row">
+		1 <div class="col-md-6" data-bind="html: $data"></div>
+</script>
+
+<script id="templateEndRow" type="text/html">
+		2 <div class="col-md-6" data-bind="html: $data"></div>
+	</div>
+</script>
+
+start
 <div class="container">
+	<!-- ko data-bind="template: {name: templateGet, foreach: messages}" -->?????<!-- /ko -->
+	<div data-bind="template: {name: templateGet, foreach: messages}">aaa </div>
+	
+	<!-- ko foreach: messages -->
+	<!-- /ko -->
+</div>
+end
+<div class="container">
+
+	<!-- ko foreach: messages -->
+	<!-- ko if: ($index() % 2 == 0) -->
+	<div class="row">
+		<div class="col-md-6" data-bind="html: $data"></div>
+	<!-- /ko -->
+	<!-- ko ifnot: ($index() % 2 == 0) -->
+		<div class="col-md-6" data-bind="html: $data">???</div>
+	</div>
+	<!-- /ko -->
+	<!-- /ko -->		
+
+	<ul data-bind="foreach: messages" id="messages">
+		<li data-bind="html: $data"></li>
+	</ul>
+
 	<div class="row">
 		<div class="col-md-6">
 			<h2>Photos</h2>

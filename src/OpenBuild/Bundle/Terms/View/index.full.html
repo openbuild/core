@@ -1,4 +1,4 @@
-{% extends "index.full.html" %}
+{% extends "@layout/index.html" %}
 {% block main %}
 <div class="jumbotron">
 	<div class="container">
@@ -8,13 +8,13 @@
 </div>
 
 <div class="container">
-	{% for row in policies|batch(3, '') %}
+	{% for row in terms|batch(2, '') %}
 	<div class="row">
 		{% for column in row %}
-		<div class="col-md-4">	
+		<div class="col-md-6">	
 			{% if column is not empty %}
 			<h2>{{ column.getTitle().getValue() }}</h2>
-			{{ column.getPolicy().getHTML()|raw }}
+			{{ column.getTerm().getHTML()|raw }}
 			{% endif %}
 		</div>
 		{% endfor %}

@@ -14,6 +14,27 @@
 		{% endfor %}
 	];
 	
+	ctor.messageCounter = 0;
+	
+	ctor.templateGet = function(data){
+//console.log('data:');
+//console.log(data);
+console.log(ctor.messageCounter);
+
+console.log(ctor.messageCounter % 2 == 0);
+
+		if(ctor.messageCounter % 2 == 0){
+			template = 'templateStartRow';
+		}else{
+			template = 'templateEndRow';
+		}
+
+		ctor.messageCounter = ctor.messageCounter + 1;
+
+		return template;
+		
+	}.bind(ctor);
+	
     return ctor;
     
 });

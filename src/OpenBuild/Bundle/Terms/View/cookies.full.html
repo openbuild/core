@@ -1,20 +1,20 @@
-{% extends "index.full.html" %}
-
+{% extends "@layout/index.html" %}
 {% block main %}
 <div class="jumbotron">
 	<div class="container">
 		<h1>{{ introduction.getTitle().getValue() }}</h1>
-		<p>{{ introduction.getBody().getValue() }}</p>
+		<p>{{ introduction.getBody().getHTML()|raw }}</p>
 	</div>
 </div>
 
 <div class="container">
-	{% for row in messages|batch(2, '') %}
+	{% for row in policies|batch(3, '') %}
 	<div class="row">
 		{% for column in row %}
-		<div class="col-md-6">	
+		<div class="col-md-4">	
 			{% if column is not empty %}
-			{{ column.getMessage().getHTML()|raw }}
+			<h2>{{ column.getTitle().getValue() }}</h2>
+			{{ column.getPolicy().getHTML()|raw }}
 			{% endif %}
 		</div>
 		{% endfor %}

@@ -29,6 +29,8 @@ class ServiceController extends AbstractServiceController
 			'signup-index.js' => true
 		));
 
+		$app['twig.loader.filesystem']->addPath(__DIR__.'/../View', 'signup');
+
 		return $controllers;
 
 	}
@@ -39,69 +41,27 @@ class ServiceController extends AbstractServiceController
  
  		$app['bundle.signup.full_page.index'] = $app->protect(function() use ($app){
 
-			$localFile = $app['request']->server->get('DOCUMENT_ROOT') . '../views/app/signup/index.full.html';
-			$appFile = $app['spa_files_dir'] . 'signup/index.full.html';
-
 			if($app['request']->getMethod() == 'POST'){
-var_dump($app['request']->request->all());
+//var_dump($app['request']->request->all());
 			
 			}
 
-
-			if(file_exists($localFile)){
-				return $app->render($localFile, [
-				]);
-			}else{
-				return $app->render('app/signup/index.full.html', [
-				]);
-			}
+			return $app->render('@signup/index.full.html', []);
 
  		});
  
  		$app['bundle.signup.index'] = $app->protect(function() use ($app){
 
-			$localFile = $app['request']->server->get('DOCUMENT_ROOT') . '../views/app/signup/index.html';
-			$appFile = $app['spa_files_dir'] . 'signup/index.html';
-			
-			if(file_exists($localFile)){
-			
-				return new Response(
-            		file_get_contents($localFile),
-					200
-				);
-				
-			}elseif(file_exists($appFile)){
-					
-				return new Response(
-            		file_get_contents($appFile),
-					200
-				);
-					
-			}else{
-				
-				$app->abort(404, "Could not find view file signup/index.html");
-				
-			}
+			return $app->render('@signup/index.html', []);
 
 		});
 		
 		$app['bundle.signup.index.js'] = $app->protect(function() use ($app){
 		
-			$appFile = $app['spa_files_dir'] . 'signup/index.js';
+			$response = new Response();
+			$response->headers->set('content-type', 'application/javascript');
 			
-			if(file_exists($appFile)){
-					
-				return new Response(
-            		file_get_contents($appFile),
-					200,
-					array('content-type' => 'application/javascript')
-				);
-					
-			}else{
-				
-				$app->abort(404, "Could not find view file signup/index.js");
-				
-			}
+			return $app->render('@signup/index.js', [], $response);
 		
 		});
 		

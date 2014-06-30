@@ -29,6 +29,8 @@ class ServiceController extends AbstractServiceController
 			'thanks-index.js' => true
 		));
 	
+		$app['twig.loader.filesystem']->addPath(__DIR__.'/../View', 'thanks');
+	
 		return $controllers;
 
 	}
@@ -39,39 +41,16 @@ class ServiceController extends AbstractServiceController
 
 		$app['bundle.thanks.full_page.index'] = $app->protect(function() use ($app){
 
-			
-
-			return $app->render('app/thanks/index.full.html', [
+			return $app->render('@thanks/index.html', [
 				'introduction' => $app['thanks.repository.introduction']->getLatest(),
-				'messages' => $app['thanks.repository.message']->findAll()
+				'messages' => $app['thanks.repository.message']->findAll()			
 			]);
 
  		});
  
  		$app['bundle.thanks.index'] = $app->protect(function() use ($app){
 
-			$localFile = $app['request']->server->get('DOCUMENT_ROOT') . '../views/app/thanks/index.html';
-			$appFile = $app['spa_files_dir'] . 'thanks/index.html';
-			
-			if(file_exists($localFile)){
-			
-				return new Response(
-            		file_get_contents($localFile),
-					200
-				);
-				
-			}elseif(file_exists($appFile)){
-					
-				return new Response(
-            		file_get_contents($appFile),
-					200
-				);
-					
-			}else{
-				
-				$app->abort(404, "Could not find view file index.html");
-				
-			}
+			return $app->render('@thanks/index.html', []);
 
 		});
 		
@@ -80,9 +59,9 @@ class ServiceController extends AbstractServiceController
 			$response = new Response();
 			$response->headers->set('content-type', 'application/javascript');
 
-			return $app->render('app/thanks/index.js', [
+			return $app->render('@thanks/index.js', [
 				'introduction' => $app['thanks.repository.introduction']->getLatest(),
-				'messages' => $app['thanks.repository.message']->findAll()
+				'messages' => $app['thanks.repository.message']->findAll()			
 			], $response);
 
 		});

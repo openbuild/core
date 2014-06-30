@@ -1,0 +1,25 @@
+<div class="jumbotron">
+	<div class="container">
+		<h1 data-bind="html:introductionTitle"></h1>
+		<p data-bind="html:introductionBody"></p>
+	</div>
+</div>
+
+<script id="templateStartRow" type="text/html">
+	<div class="row">
+		start<div class="col-md-6" data-bind="html: $data"></div>
+</script>
+
+<script id="templateEndRow" type="text/html">
+		<div class="col-md-6" data-bind="html: $data"></div>end
+	</div>
+</script>
+
+start
+<div class="container">
+	<!-- ko template: {name: templateGet, foreach: messages} --><!-- /ko -->	
+</div>
+end
+
+
+<div data-bind="compose:'developer/index'"></div>
