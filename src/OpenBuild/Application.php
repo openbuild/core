@@ -86,6 +86,7 @@
 
 			$app['debug'] = true;
 			$app['spa'] = true;
+			$app['spa_handler'] = 'durandal';
 			$app['search_engine'] = false;
 			
 			//$app['spa_files_dir'] = dirname(__FILE__) . '/views/app/';
@@ -194,6 +195,9 @@
 				$this->mount('/welcome',   new \OpenBuild\Bundle\Welcome\Provider\ServiceController($app));
 			
 			}else{
+
+				//TODO FIXME - use $app['spa_handler']
+				$this->mount('/app/durandal',   new \OpenBuild\Bundle\Durandal\Provider\ServiceController($app));
 			
 				$this->mount('/app/contact',   new \OpenBuild\Bundle\Contact\Provider\ServiceController($app));
 				$this->mount('/app/developer', new \OpenBuild\Bundle\Developer\Provider\ServiceController($app));
@@ -210,7 +214,7 @@
 			$this->get('/{home}', function(Request $request) use ($app){
 
 				if($app['spa'] && $app['search_engine'] === false){
-					return $app['page.home']();
+					return $app['page.home.spa']();
 				}else{
 					return $app['page.home.full_page']();
 				}
