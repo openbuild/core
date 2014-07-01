@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace OpenBuild\Bundle\Signup\Provider;
+namespace OpenBuild\Bundle\User\Provider;
 
 use OpenBuild\Abstracts\ServiceController AS AbstractServiceController;
 
@@ -25,11 +25,11 @@ class ServiceController extends AbstractServiceController
 	{
 
 		$controllers = $this->mapControllers($app, array(
-			'signup-index.html' => array('methods' => array('get', 'post')),
-			'signup-index.js' => true
+			'user-signup.html' => array('methods' => array('get', 'post')),
+			'user-signup.js' => true
 		));
 
-		$app['twig.loader.filesystem']->addPath(__DIR__.'/../View', 'signup');
+		$app['twig.loader.filesystem']->addPath(__DIR__.'/../View', 'user');
 
 		return $controllers;
 
@@ -39,29 +39,29 @@ class ServiceController extends AbstractServiceController
 	public function register(Application $app)
 	{
  
- 		$app['bundle.signup.full_page.index'] = $app->protect(function() use ($app){
+ 		$app['bundle.user.full_page.signup'] = $app->protect(function() use ($app){
 
 			if($app['request']->getMethod() == 'POST'){
 //var_dump($app['request']->request->all());
 			
 			}
 
-			return $app->render('@signup/index.full.html', []);
+			return $app->render('@user/signup.full.html', []);
 
  		});
  
- 		$app['bundle.signup.index'] = $app->protect(function() use ($app){
+ 		$app['bundle.user.signup'] = $app->protect(function() use ($app){
 
-			return $app->render('@signup/index.html', []);
+			return $app->render('@user/signup.html', []);
 
 		});
 		
-		$app['bundle.signup.index.js'] = $app->protect(function() use ($app){
+		$app['bundle.user.signup.js'] = $app->protect(function() use ($app){
 		
 			$response = new Response();
 			$response->headers->set('content-type', 'application/javascript');
 			
-			return $app->render('@signup/index.js', [], $response);
+			return $app->render('@user/signup.js', [], $response);
 		
 		});
 		

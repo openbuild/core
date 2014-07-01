@@ -116,7 +116,7 @@
 					'security' => false,
 				),
 				'signup' => array(
-					'pattern' => '^/signup.obd$',
+					'pattern' => '^/user-signup.obd$',
 					'security' => false,
 				),
 				//Everything else is protected
@@ -189,7 +189,7 @@
 				$this->mount('/contact',   new \OpenBuild\Bundle\Contact\Provider\ServiceController($app));
 				$this->mount('/flickr',    new \OpenBuild\Bundle\Flickr\Provider\ServiceController($app));
 				$this->mount('/services',  new \OpenBuild\Bundle\Services\Provider\ServiceController($app));
-				$this->mount('/signup',    new \OpenBuild\Bundle\Signup\Provider\ServiceController($app));
+				$this->mount('/user',      new \OpenBuild\Bundle\User\Provider\ServiceController($app));
 				$this->mount('/terms',     new \OpenBuild\Bundle\Terms\Provider\ServiceController($app));
 				$this->mount('/thanks',    new \OpenBuild\Bundle\Thanks\Provider\ServiceController($app));
 				$this->mount('/welcome',   new \OpenBuild\Bundle\Welcome\Provider\ServiceController($app));
@@ -204,7 +204,7 @@
 				$this->mount('/app/error',     new \OpenBuild\Bundle\Error\Provider\ServiceController($app));
 				$this->mount('/app/flickr',    new \OpenBuild\Bundle\Flickr\Provider\ServiceController($app));
 				$this->mount('/app/services',  new \OpenBuild\Bundle\Services\Provider\ServiceController($app));
-				$this->mount('/app/signup',    new \OpenBuild\Bundle\Signup\Provider\ServiceController($app));
+				$this->mount('/app/user',      new \OpenBuild\Bundle\User\Provider\ServiceController($app));
 				$this->mount('/app/terms',     new \OpenBuild\Bundle\Terms\Provider\ServiceController($app));
 				$this->mount('/app/thanks',    new \OpenBuild\Bundle\Thanks\Provider\ServiceController($app));
 				$this->mount('/app/welcome',   new \OpenBuild\Bundle\Welcome\Provider\ServiceController($app));
@@ -228,7 +228,7 @@
 				'/contact-us.obd' => 'contact-index',
 				'/flickr.obd' => 'flickr-index',
 				'/products-and-services.obd' => 'services-index',
-				'/signup.obd' => 'signup-index',
+				'/user-signup.obd' => 'user-signup',
 				'/terms.obd' => 'terms-index',
 				'/terms-cookies.obd' => 'terms-cookies',
 				'/thanks.obd' => 'thanks-index'

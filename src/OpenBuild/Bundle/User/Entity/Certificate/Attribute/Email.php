@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace OpenBuild\Bundle\Signup\Entity\Certificate\Attribute;
+namespace OpenBuild\Bundle\User\Entity\Certificate\Attribute;
 
-class County
+class Email
 {
     private $value;
 

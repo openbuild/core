@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace OpenBuild\Bundle\Signup\Entity\Certificate;
+namespace OpenBuild\Bundle\User\Entity\Certificate;
 
-use OpenBuild\Bundle\Signup\Entity\Certificate\Attribute\Id;
-use OpenBuild\Bundle\Signup\Entity\Certificate\Attribute\FirstName;
-use OpenBuild\Bundle\Signup\Entity\Certificate\Attribute\LastName;
-use OpenBuild\Bundle\Signup\Entity\Certificate\Attribute\Email;
-use OpenBuild\Bundle\Signup\Entity\Certificate\Attribute\Password;
-use OpenBuild\Bundle\Signup\Entity\Certificate\Attribute\PasswordRepeat;
-use OpenBuild\Bundle\Signup\Entity\Certificate\Attribute\City;
-use OpenBuild\Bundle\Signup\Entity\Certificate\Attribute\County;
-use OpenBuild\Bundle\Signup\Entity\Certificate\Attribute\Country;
+use OpenBuild\Bundle\User\Entity\Certificate\Attribute\Id;
+use OpenBuild\Bundle\User\Entity\Certificate\Attribute\FirstName;
+use OpenBuild\Bundle\User\Entity\Certificate\Attribute\LastName;
+use OpenBuild\Bundle\User\Entity\Certificate\Attribute\Email;
+use OpenBuild\Bundle\User\Entity\Certificate\Attribute\Password;
+use OpenBuild\Bundle\User\Entity\Certificate\Attribute\PasswordRepeat;
+use OpenBuild\Bundle\User\Entity\Certificate\Attribute\City;
+use OpenBuild\Bundle\User\Entity\Certificate\Attribute\County;
+use OpenBuild\Bundle\User\Entity\Certificate\Attribute\Country;
 
 class Entity
 {
