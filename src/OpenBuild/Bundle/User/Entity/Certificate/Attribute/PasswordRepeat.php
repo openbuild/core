@@ -11,18 +11,11 @@
 
 namespace OpenBuild\Bundle\User\Entity\Certificate\Attribute;
 
-class PasswordRepeat
+class PasswordRepeat extends \OpenBuild\Abstracts\Attribute
 {
-    private $value;
-
-    public function __construct($value)
-    {
-        $this->value = $value;
-    }
-
-    public function getValue()
-    {
-        return $this->value;
-    }
-    
+	
+	public function isValid(){
+	
+	}
+	
 }
