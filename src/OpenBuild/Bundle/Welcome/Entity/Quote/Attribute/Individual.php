@@ -11,18 +11,11 @@
 
 namespace OpenBuild\Bundle\Welcome\Entity\Quote\Attribute;
 
-class Individual
+class Individual extends \OpenBuild\Abstracts\Attribute
 {
-    private $value;
-
-    public function __construct($value)
-    {
-        $this->value = $value;
-    }
-
-    public function getValue()
-    {
-        return $this->value;
-    }
-    
+	
+	public function isValid(){
+	
+	}
+	
 }

@@ -11,18 +11,11 @@
 
 namespace OpenBuild\Bundle\Welcome\Entity\Feature\Attribute;
 
-class Feature
+class Feature extends \OpenBuild\Abstracts\Attribute
 {
-    private $value;
-
-    public function __construct($value)
-    {
-        $this->value = $value;
-    }
-
-    public function getValue()
-    {
-        return $this->value;
-    }
-    
+	
+	public function isValid(){
+	
+	}
+	
 }
