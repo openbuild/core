@@ -11,25 +11,11 @@
 
 namespace OpenBuild\Bundle\Services\Entity\Introduction\Attribute;
 
-use Parsedown;
-
-class Body
+class Body extends \OpenBuild\Abstracts\Attribute\Parsedown
 {
-    private $value;
-
-    public function __construct($value)
-    {
-        $this->value = $value;
-        $this->parsedown = new Parsedown();
-    }
-
-    public function getValue()
-    {
-        return $this->value;
-    }
-    
-    public function getHTML(){
-    	return $this->parsedown->text($this->value);
-    }
-    
+	
+	public function isValid(){
+	
+	}
+	
 }
