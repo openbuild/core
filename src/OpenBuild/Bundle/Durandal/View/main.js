@@ -6,7 +6,7 @@
         'transitions' : '/lib/durandal/js/transitions',
         'knockout': '/lib/knockout.js/knockout',
         'bootstrap': '/lib/bootstrap/dist/js/bootstrap.min',
-        'jquery': '/lib/jquery/jquery',
+        'jquery': '/lib/jquery/dist/jquery.min',
 		'openbuild': '/lib/openbuild-js-core',
 		'toastr': '/lib/toastr/toastr.min',
 		'QUnit': '/lib/qunit/qunit-1.13.0',
