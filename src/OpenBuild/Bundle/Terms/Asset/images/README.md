@@ -1,0 +1,1 @@
+Static images for this module should be stored here.

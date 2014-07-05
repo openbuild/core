@@ -1,0 +1,1 @@
+Static module assets should be stored in directories css, images and javascript.
