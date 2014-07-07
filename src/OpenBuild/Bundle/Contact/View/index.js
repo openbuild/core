@@ -1,4 +1,4 @@
-﻿define(['plugins/router', 'durandal/events', 'knockout', 'jquery'], function(router, events, ko, jquery){
+﻿define(['plugins/router', 'plugins/http', 'durandal/events', 'durandal/app', 'knockout', 'jquery'], function(router, http, events, app, ko, jquery){
 
 	/*
 	has-success
@@ -65,17 +65,13 @@
 	*/	
 	ctor.help = function(where){
 	
-		//ctor.firstNameStatus('form-group has-warning');
-		//ctor.firstNameMessage('dgdf');
 		$.each(ctor.form, function(k, v){
 		
 			messageProperty = k + 'Message';
 			statusProperty = k + 'Status';
 			
 			if(k == where){
-//console.log('set:' + k);
-//console.log(statusProperty + ' : ' + v.help);
-//console.log(ctor[statusProperty]());
+
 				if(ctor[messageProperty]() == ''){
 					ctor[messageProperty](v.help);
 					ctor[statusProperty]('form-group has-warning');
@@ -84,7 +80,7 @@
 					ctor[statusProperty]('form-group');
 				}
 			}else{
-//console.log('blank:' + k);
+
 				ctor[messageProperty]('');
 				ctor[statusProperty]('form-group');
 			}
@@ -94,7 +90,22 @@
 	};
 	
 	ctor.send = function(){
-		alert('Send it!');
+
+		http.post('{{ dir }}/contact.js', {
+			firstName: ctor.firstName(),
+			lastName: ctor.lastName(),
+			email: ctor.email(),
+			phone: ctor.phone(),
+			message: ctor.message()
+		}).then(function(response){
+			console.log('w00t response');
+			console.log(response);
+		}, function(error) {
+			console.log('error');
+			console.log(error);
+			app.showMessage(error.statusText, "Error in contact");
+		});
+		
 	};
 	
 /*
