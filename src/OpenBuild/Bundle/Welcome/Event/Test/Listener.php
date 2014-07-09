@@ -35,6 +35,7 @@ class Listener
 
 		error_log('Do onCreate');
 		//error_log(print_r($event, true));
+		return array('w00t, w00t');
 		
 	}
 
